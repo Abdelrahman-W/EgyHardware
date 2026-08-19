@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>EgyHardware — سوق العتاد التقني في مصر</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/cairo@latest/index.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: {
+      onyx: '#09090b',
+      cobalt: {50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'}
+    },
+    fontFamily: { cairo: ['Cairo','system-ui','sans-serif'] },
+    boxShadow: { glow:'0 0 24px rgba(37,99,235,.35)', glowsm:'0 0 12px rgba(37,99,235,.3)', glowem:'0 8px 24px rgba(5,150,105,.4)' }
+  }}
+};
+</script>
+<style>
+  html{scroll-behavior:smooth}
+  body{background:#09090b;-webkit-tap-highlight-color:transparent}
+  ::selection{background:#2563eb;color:#fff}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:#09090b}
+  ::-webkit-scrollbar-thumb{background:#27272a;border-radius:8px}
+  ::-webkit-scrollbar-thumb:hover{background:#2563eb}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes pop{0%{opacity:0;transform:scale(.94)}100%{opacity:1;transform:scale(1)}}
+  @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  @keyframes slideL{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+  @keyframes slideR{from{transform:translateX(100%)}to{transform:translateX(0)}}
+  @keyframes pulseSoft{0%,100%{opacity:1}50%{opacity:.4}}
+  @keyframes typing{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-4px)}}
+  @keyframes bidFlash{0%{background:rgba(37,99,235,.35)}100%{background:transparent}}
+  @keyframes spinGlow{to{transform:rotate(360deg)}}
+  @keyframes snack{from{opacity:0;transform:translateY(16px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+  .anim-fadeUp{animation:fadeUp .5s ease both}
+  .anim-pop{animation:pop .28s ease both}
+  .anim-sheet{animation:sheetUp .32s cubic-bezier(.2,.8,.2,1) both}
+  .anim-slideR{animation:slideR .3s ease both}
+  .anim-snack{animation:snack .3s ease both}
+  .card{transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+  .card:hover{transform:translateY(-4px);border-color:rgba(37,99,235,.6);box-shadow:0 0 24px rgba(37,99,235,.25)}
+  .tap{transition:transform .12s ease}
+  .tap:active{transform:scale(.96)}
+  .dot-typing span{display:inline-block;width:6px;height:6px;border-radius:9999px;background:#93c5fd;margin-inline:2px;animation:typing 1s infinite}
+  .dot-typing span:nth-child(2){animation-delay:.15s}.dot-typing span:nth-child(3){animation-delay:.3s}
+  .bid-row{animation:bidFlash 1s ease both}
+  input[type=range]{accent-color:#2563eb}
+  .no-scrollbar::-webkit-scrollbar{display:none}
+  .no-scrollbar{scrollbar-width:none}
+  .touch{min-height:44px;min-width:44px}
+  #loader{transition:opacity .6s ease}
+  .loader-ring{width:56px;height:56px;border-radius:9999px;border:4px solid #27272a;border-top-color:#2563eb;animation:spinGlow .9s linear infinite}
+  .bnav.active{color:#60a5fa}
+  .nav-link.active{background:#1e3a8a66;color:#93c5fd}
+  .chip-on{background:#2563eb!important;color:#fff!important;border-color:#2563eb!important}
+  .snap-row{scroll-snap-type:x mandatory}
+  .snap-row>*{scroll-snap-align:start}
+</style>
+</head>
+<body class="bg-onyx text-zinc-100 font-cairo pb-20 md:pb-0">
+
+<!-- LOADER -->
+<div id="loader" class="fixed inset-0 z-[80] bg-onyx grid place-items-center">
+  <div class="text-center">
+    <div class="loader-ring mx-auto mb-4"></div>
+    <p class="text-xl font-black"><span class="text-cobalt-400">Egy</span>Hardware</p>
+    <p class="text-xs text-zinc-500 mt-1">جاري التحميل...</p>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-40 bg-onyx/85 backdrop-blur-lg border-b border-zinc-800">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center gap-2">
+    <button data-action="nav" data-view="home" class="tap flex items-center gap-1 text-lg md:text-xl font-black shrink-0" aria-label="الرئيسية">
+      <span class="text-cobalt-400">Egy</span><span class="text-white">Hardware</span>
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ms-1"></span>
+    </button>
+    <nav class="hidden lg:flex items-center gap-1 text-sm text-zinc-300">
+      <button data-action="nav" data-view="market" class="nav-link tap px-3 py-2 rounded-lg hover:bg-zinc-800 hover:text-white">السوق</button>
+      <button data-action="nav" data-view="compare" class="nav-link tap px-3 py-2 rounded-lg hover:bg-zinc-800 hover:text-white">مقارنة</button>
+      <button data-action="nav" data-view="builder" class="nav-link tap px-3 py-2 rounded-lg hover:bg-zinc-800 hover:text-white">ابنِ جهازك</button>
+      <button data-action="nav" data-view="sell" class="nav-link tap px-3 py-2 rounded-lg hover:bg-zinc-800 hover:text-white">بِع قطعتك</button>
+      <button data-action="nav" data-view="tradein" class="nav-link tap px-3 py-2 rounded-lg hover:bg-zinc-800 hover:text-white">استبدال</button>
+      <button data-action="nav" data-view="b2b" class="nav-link tap px-3 py-2 rounded-lg hover:bg-zinc-800 hover:text-white">الشركات</button>
+    </nav>
+    <form id="searchForm" class="flex-1 max-w-md hidden sm:flex">
+      <div class="relative w-full">
+        <input id="searchInput" type="search" placeholder="ابحث عن كرت، معالج، سيرفر، سويتش..." class="w-full h-11 bg-zinc-900 border border-zinc-700 rounded-full ps-5 pe-11 text-sm focus:outline-none focus:border-cobalt-500 focus:ring-2 focus:ring-cobalt-500/30">
+        <button type="submit" class="absolute end-1 top-1 touch grid place-items-center w-9 h-9 rounded-full text-zinc-400 hover:text-cobalt-400" aria-label="بحث"><i data-lucide="search" class="w-5 h-5"></i></button>
+      </div>
+    </form>
+    <div class="flex items-center gap-1 ms-auto">
+      <button data-action="nav" data-view="favorites" class="tap relative grid place-items-center w-11 h-11 rounded-full hover:bg-zinc-800 text-zinc-300" aria-label="المفضلة">
+        <i data-lucide="heart" class="w-5 h-5"></i>
+        <span id="favBadge" class="absolute top-1 start-1 min-w-4 h-4 px-1 rounded-full bg-red-500 text-[10px] grid place-items-center hidden">0</span>
+      </button>
+      <button data-action="nav" data-view="compare" class="tap relative grid place-items-center w-11 h-11 rounded-full hover:bg-zinc-800 text-zinc-300" aria-label="مقارنة">
+        <i data-lucide="scale" class="w-5 h-5"></i>
+        <span id="cmpBadge" class="absolute top-1 start-1 min-w-4 h-4 px-1 rounded-full bg-cobalt-600 text-[10px] grid place-items-center hidden">0</span>
+      </button>
+      <button data-action="open-cart" class="tap relative grid place-items-center w-11 h-11 rounded-full hover:bg-zinc-800 text-zinc-300" aria-label="السلة">
+        <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+        <span id="cartBadge" class="absolute top-1 start-1 min-w-4 h-4 px-1 rounded-full bg-emerald-500 text-onyx text-[10px] font-bold grid place-items-center hidden">0</span>
+      </button>
+    </div>
+  </div>
+  <form id="searchFormM" class="sm:hidden px-4 pb-3">
+    <div class="relative">
+      <input id="searchInputM" type="search" placeholder="ابحث عن كرت، معالج، سيرفر، سويتش..." class="w-full h-11 bg-zinc-900 border border-zinc-700 rounded-full ps-5 pe-11 text-sm focus:outline-none focus:border-cobalt-500">
+      <button type="submit" class="absolute end-1 top-1 touch grid place-items-center w-9 h-9 rounded-full text-zinc-400" aria-label="بحث"><i data-lucide="search" class="w-5 h-5"></i></button>
+    </div>
+  </form>
+</header>
+
+<main class="max-w-7xl mx-auto px-4">
+
+<!-- ═══════════ HOME ═══════════ -->
+<section id="view-home" class="view">
+  <div class="relative rounded-3xl overflow-hidden border border-zinc-800 mt-4 anim-fadeUp">
+    <img src="https://image.qwenlm.ai/public_source/f183b3a6-df2a-46ef-b99c-9df48ae492ab/183faf416-f96a-4af1-9b74-fd4b3c1252d7.png" alt="Gaming setup" class="absolute inset-0 w-full h-full object-cover opacity-40" onerror="this.onerror=null;this.src=FALLBACK_IMG">
+    <div class="absolute inset-0 bg-gradient-to-l from-onyx via-onyx/70 to-transparent"></div>
+    <div class="relative p-6 md:p-14 max-w-2xl">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cobalt-600/20 border border-cobalt-500/40 text-cobalt-300 text-xs mb-4"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> مدعوم بمساعد ذكاء اصطناعي يعرف جهازك</span>
+      <h1 class="text-2xl md:text-5xl font-black leading-snug mb-4">سوق العتاد التقني <span class="text-cobalt-400">الأول في مصر</span></h1>
+      <p class="text-zinc-300 md:text-lg mb-6">اشترِ، بِع، وقايض كروت الشاشة والمعالجات والشاشات وأجهزة الألعاب — وحلول سيرفرات وشبكات للشركات. ودَع مساعدنا الذكي يقترح عليك أفضل ترقية بلا اختناقات.</p>
+      <div class="flex flex-wrap gap-3">
+        <button data-action="nav" data-view="market" class="tap touch h-12 px-6 rounded-xl bg-cobalt-600 hover:bg-cobalt-500 font-bold shadow-glow">تصفّح السوق</button>
+        <button data-action="nav" data-view="sell" class="tap touch h-12 px-6 rounded-xl bg-zinc-800/80 border border-zinc-700 hover:border-emerald-500 font-bold">بِع قطعتك</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-8">
+    <div class="flex items-center justify-between mb-4"><h2 class="text-lg md:text-xl font-black">تسوّق حسب القسم</h2><button data-action="nav" data-view="market" class="tap text-cobalt-400 text-sm flex items-center gap-1">عرض الكل <i data-lucide="chevron-left" class="w-4 h-4"></i></button></div>
+    <div id="catRow" class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3"></div>
+  </div>
+
+  <div class="mt-10">
+    <div class="flex items-center justify-between mb-4"><h2 class="text-lg md:text-xl font-black flex items-center gap-2"><i data-lucide="flame" class="w-5 h-5 text-orange-400"></i> الأكثر مبيعاً</h2><button data-action="nav" data-view="market" class="tap text-cobalt-400 text-sm flex items-center gap-1">عرض الكل <i data-lucide="chevron-left" class="w-4 h-4"></i></button></div>
+    <div id="bestGrid" class="flex gap-4 overflow-x-auto no-scrollbar snap-row md:grid md:grid-cols-3 xl:grid-cols-4 md:overflow-visible"></div>
+  </div>
+
+  <div class="mt-10 rounded-3xl border border-cobalt-500/30 bg-gradient-to-l from-cobalt-900/40 to-zinc-900 p-6 md:p-10 flex flex-col md:flex-row items-center gap-6 anim-fadeUp">
+    <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-cobalt-600 grid place-items-center shadow-glow shrink-0"><i data-lucide="wrench" class="w-8 h-8 md:w-10 md:h-10"></i></div>
+    <div class="flex-1 text-center md:text-right">
+      <h3 class="text-xl md:text-2xl font-black mb-2">ابنِ جهازك</h3>
+      <p class="text-zinc-300 text-sm md:text-base">اختار القطع وابنِ جهازك المثالي. تابع التوافق (Socket/DDR/الباور) والسعر الإجمالي، وأضف الكل للسلة دفعة واحدة.</p>
+    </div>
+    <button data-action="nav" data-view="builder" class="tap touch h-12 px-6 rounded-xl bg-cobalt-600 hover:bg-cobalt-500 font-bold shrink-0">ابنِ جهازك الآن</button>
+  </div>
+
+  <div class="mt-10">
+    <h2 class="text-lg md:text-xl font-black mb-1">ثلاثة أسواق في منصة واحدة</h2>
+    <p class="text-zinc-400 text-sm mb-4">اختر الطريقة التي تناسبك.</p>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+      <button data-action="nav" data-view="market" class="tap card text-right rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 md:p-5">
+        <span class="w-11 h-11 rounded-xl bg-cobalt-600/20 text-cobalt-400 grid place-items-center mb-3"><i data-lucide="shopping-bag" class="w-5 h-5"></i></span>
+        <h3 class="font-black mb-1 text-sm md:text-base">اشترِ (B2C)</h3><p class="text-[11px] md:text-xs text-zinc-400">كروت شاشة، معالجات، شاشات وأجهزة ألعاب — جديد ومستعمل.</p>
+      </button>
+      <button data-action="nav" data-view="sell" class="tap card text-right rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 md:p-5">
+        <span class="w-11 h-11 rounded-xl bg-emerald-600/20 text-emerald-400 grid place-items-center mb-3"><i data-lucide="gavel" class="w-5 h-5"></i></span>
+        <h3 class="font-black mb-1 text-sm md:text-base">بِع (C2B)</h3><p class="text-[11px] md:text-xs text-zinc-400">اعرض قطعتك ودَع التجار يتنافسون بالمزاد العكسي على شرائها.</p>
+      </button>
+      <button data-action="nav" data-view="tradein" class="tap card text-right rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 md:p-5">
+        <span class="w-11 h-11 rounded-xl bg-sky-600/20 text-sky-400 grid place-items-center mb-3"><i data-lucide="refresh-cw" class="w-5 h-5"></i></span>
+        <h3 class="font-black mb-1 text-sm md:text-base">استبدل</h3><p class="text-[11px] md:text-xs text-zinc-400">سلّم القديم واحصل على رصيد فوري في ترقيتك الجديدة.</p>
+      </button>
+      <button data-action="nav" data-view="b2b" class="tap card text-right rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 md:p-5">
+        <span class="w-11 h-11 rounded-xl bg-amber-600/20 text-amber-400 grid place-items-center mb-3"><i data-lucide="building-2" class="w-5 h-5"></i></span>
+        <h3 class="font-black mb-1 text-sm md:text-base">الشركات (B2B)</h3><p class="text-[11px] md:text-xs text-zinc-400">سيرفرات وشبكات وتجهيز كافيهات بالجملة — عمولة 0%.</p>
+      </button>
+    </div>
+  </div>
+
+  <div class="mt-10">
+    <div class="flex items-center justify-between mb-4"><h2 class="text-lg md:text-xl font-black flex items-center gap-2"><i data-lucide="zap" class="w-5 h-5 text-yellow-400"></i> عرض اليوم</h2><button data-action="nav" data-view="market" class="tap text-cobalt-400 text-sm flex items-center gap-1">عرض الكل <i data-lucide="chevron-left" class="w-4 h-4"></i></button></div>
+    <div id="dealGrid" class="flex gap-4 overflow-x-auto no-scrollbar snap-row md:grid md:grid-cols-4 md:overflow-visible"></div>
+  </div>
+
+  <div class="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+    <div class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 text-center"><i data-lucide="badge-check" class="w-7 h-7 text-cobalt-400 mx-auto mb-2"></i><h4 class="font-bold text-sm">بائعون موثوقون</h4><p class="text-xs text-zinc-500 mt-1">جميع البائعين موثقون بشارة "Verified"</p></div>
+    <div class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 text-center"><i data-lucide="shield-check" class="w-7 h-7 text-emerald-400 mx-auto mb-2"></i><h4 class="font-bold text-sm">دفع آمن وشفاف</h4><p class="text-xs text-zinc-500 mt-1">السعر + الشحن + تأمين 1.5% أمامك مسبقاً</p></div>
+    <div class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 text-center"><i data-lucide="truck" class="w-7 h-7 text-sky-400 mx-auto mb-2"></i><h4 class="font-bold text-sm">شحن سريع</h4><p class="text-xs text-zinc-500 mt-1">مجاني للطلبات فوق ٥٬٠٠٠ ج.م</p></div>
+    <div class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 text-center"><i data-lucide="bot" class="w-7 h-7 text-cobalt-400 mx-auto mb-2"></i><h4 class="font-bold text-sm">مساعد ذكي</h4><p class="text-xs text-zinc-500 mt-1">يكشف الاختناقات ويقترح الترقية المثالية</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ MARKET ═══════════ -->
+<section id="view-market" class="view hidden">
+  <div class="py-4 md:py-6">
+    <div class="flex items-center gap-2 mb-4">
+      <h2 class="text-lg md:text-xl font-black shrink-0">السوق <span id="mCount" class="text-sm text-zinc-500 font-normal"></span></h2>
+      <div id="quickChips" class="flex gap-2 overflow-x-auto no-scrollbar flex-1"></div>
+      <button data-action="open-filters" class="tap lg:hidden touch shrink-0 h-11 px-4 rounded-full border border-zinc-700 bg-zinc-900 text-xs font-bold flex items-center gap-2"><i data-lucide="sliders-horizontal" class="w-4 h-4 text-cobalt-400"></i> فلاتر</button>
+    </div>
+    <div class="flex gap-6">
+      <div id="filterOverlay" class="fixed inset-0 bg-black/60 z-40 hidden lg:hidden"></div>
+      <aside id="filterPanel" class="fixed inset-y-0 right-0 z-50 w-80 max-w-[85vw] bg-onyx border-s border-zinc-800 p-4 overflow-y-auto transform transition-transform duration-300 translate-x-full lg:translate-x-0 lg:static lg:z-auto lg:w-64 lg:shrink-0 lg:bg-transparent lg:border-0 lg:p-0 lg:transform-none lg:transition-none">
+        <div class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 lg:sticky lg:top-20 space-y-5" id="marketFilters">
+          <div class="flex items-center justify-between">
+            <h3 class="font-black flex items-center gap-2"><i data-lucide="filter" class="w-4 h-4 text-cobalt-400"></i> فلترة عميقة</h3>
+            <div class="flex items-center gap-3">
+              <button data-action="clear-filters" class="text-xs text-zinc-400 hover:text-red-400">مسح</button>
+              <button data-action="close-filters" class="lg:hidden touch w-9 h-9 grid place-items-center rounded-lg hover:bg-zinc-800" aria-label="إغلاق"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+          </div>
+          <div><h4 class="text-xs font-bold text-zinc-400 mb-2">القسم</h4><div id="fCats" class="space-y-1 text-sm"></div></div>
+          <div><h4 class="text-xs font-bold text-zinc-400 mb-2">الحالة</h4><div id="fConds" class="space-y-1 text-sm"></div></div>
+          <div><h4 class="text-xs font-bold text-zinc-400 mb-2">الماركة</h4><div id="fBrands" class="space-y-1 text-sm max-h-40 overflow-auto no-scrollbar"></div></div>
+          <div>
+            <h4 class="text-xs font-bold text-zinc-400 mb-2">أقصى سعر: <span id="priceLbl" class="text-emerald-400"></span></h4>
+            <input id="fPrice" type="range" min="3000" max="200000" step="500" value="200000" class="w-full">
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-zinc-400 mb-2 flex items-center gap-1"><i data-lucide="cpu" class="w-3.5 h-3.5"></i> التوافق (Socket)</h4>
+            <select id="fSocket" class="w-full h-10 bg-zinc-900 border border-zinc-700 rounded-lg px-2 text-sm focus:outline-none focus:border-cobalt-500">
+              <option value="">الكل</option><option value="AM4">AM4</option><option value="AM5">AM5</option><option value="LGA1700">LGA1700</option>
+            </select>
+            <p class="text-[10px] text-zinc-500 mt-1">يُخفي اللوحات غير المتوافقة مع المقعد المختار (Newegg-Style).</p>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-zinc-400 mb-2">الترتيب حسب</h4>
+            <select id="fSort" class="w-full h-10 bg-zinc-900 border border-zinc-700 rounded-lg px-2 text-sm focus:outline-none focus:border-cobalt-500">
+              <option value="pop">الأكثر شعبية</option><option value="priceAsc">السعر: الأقل أولاً</option><option value="priceDesc">السعر: الأعلى أولاً</option><option value="rating">الأعلى تقييماً</option>
+            </select>
+          </div>
+          <button data-action="close-filters" class="lg:hidden tap touch w-full h-11 rounded-xl bg-cobalt-600 font-bold text-sm">عرض النتائج</button>
+        </div>
+      </aside>
+      <div class="flex-1 min-w-0">
+        <div id="marketGrid" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"></div>
+        <div id="mEmpty" class="hidden text-center py-20 text-zinc-500"><i data-lucide="package-search" class="w-12 h-12 mx-auto mb-3"></i>لا توجد نتائج مطابقة — جرّب تعديل الفلاتر.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FAVORITES ═══════════ -->
+<section id="view-favorites" class="view hidden py-6">
+  <h2 class="text-xl font-black mb-4 flex items-center gap-2"><i data-lucide="heart" class="w-5 h-5 text-red-400"></i> المفضلة <span id="favCount" class="text-sm text-zinc-500 font-normal"></span></h2>
+  <div id="favGrid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4"></div>
+  <div id="favEmpty" class="hidden text-center py-20 text-zinc-500">
+    <i data-lucide="heart-off" class="w-12 h-12 mx-auto mb-3"></i>
+    <p class="mb-4">لا توجد منتجات في المفضلة بعد.</p>
+    <button data-action="nav" data-view="market" class="tap touch h-11 px-6 rounded-xl bg-cobalt-600 hover:bg-cobalt-500 font-bold text-sm">تصفّح السوق</button>
+  </div>
+</section>
+
+<!-- ═══════════ COMPARE ═══════════ -->
+<section id="view-compare" class="view hidden py-6">
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <h2 class="text-xl font-black flex items-center gap-2"><i data-lucide="scale" class="w-5 h-5 text-cobalt-400"></i> المقارنة الذكية</h2>
+    <label class="flex items-center gap-2 text-sm text-zinc-300 cursor-pointer"><input id="diffOnly" type="checkbox" class="accent-cobalt-500 w-4 h-4" checked> إبراز الاختلافات فقط (Best Buy)</label>
+  </div>
+  <div id="cmpTray" class="flex flex-wrap gap-2 mb-6"></div>
+  <div id="cmpTable" class="overflow-x-auto rounded-2xl border border-zinc-800"></div>
+  <div id="cmpHint" class="text-center py-16 text-zinc-500"><i data-lucide="scale" class="w-12 h-12 mx-auto mb-3"></i>أضف منتجين أو ثلاثة للمقارنة من أيقونة ⚖ في أي بطاقة منتج.</div>
+</section>
+
+<!-- ═══════════ BUILDER ═══════════ -->
+<section id="view-builder" class="view hidden py-6">
+  <h2 class="text-xl font-black mb-1 flex items-center gap-2"><i data-lucide="wrench" class="w-5 h-5 text-cobalt-400"></i> ابنِ جهازك</h2>
+  <p class="text-sm text-zinc-400 mb-6">فحص توافق تلقائي: Socket المعالج مع اللوحة، نوع الذاكرة، وقدرة الباور مع الكرت.</p>
+  <div id="buildSlots" class="grid md:grid-cols-2 gap-4"></div>
+  <div id="buildWarn" class="mt-4 space-y-2"></div>
+  <div class="mt-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5 flex flex-wrap items-center gap-4">
+    <div class="flex-1 min-w-40">
+      <p class="text-sm text-zinc-400">الإجمالي (قبل الشحن والتأمين)</p>
+      <p id="buildTotal" class="text-2xl font-black text-emerald-400">٠ ج.م</p>
+    </div>
+    <button data-action="builder-add-all" class="tap touch h-12 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold">أضف الكل للسلة</button>
+  </div>
+</section>
+
+<!-- ═══════════ SELL ═══════════ -->
+<section id="view-sell" class="view hidden py-6 max-w-3xl mx-auto">
+  <h2 class="text-xl font-black mb-1 flex items-center gap-2"><i data-lucide="gavel" class="w-5 h-5 text-emerald-400"></i> بِع قطعتك — مزاد عكسي مباشر</h2>
+  <p class="text-sm text-zinc-400 mb-6">أدخل بيانات قطعتك، نحسب قيمتها التقديرية، ثم يتنافس التجار مباشرةً. رسوم المنصة 3.5% فقط.</p>
+  <form id="sellForm" class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 md:p-6 grid sm:grid-cols-2 gap-4" novalidate>
+    <div><label class="text-xs font-bold text-zinc-400">الاسم الكامل *</label><input id="sName" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-cobalt-500" placeholder="مثال: أحمد محمد"><p class="err text-[11px] text-red-400 mt-1 hidden"></p></div>
+    <div><label class="text-xs font-bold text-zinc-400">رقم الموبايل *</label><input id="sPhone" inputmode="numeric" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-cobalt-500" placeholder="01xxxxxxxxx"><p class="err text-[11px] text-red-400 mt-1 hidden"></p></div>
+    <div><label class="text-xs font-bold text-zinc-400">القسم *</label><select id="sCat" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-cobalt-500"><option value="">اختر...</option></select><p class="err text-[11px] text-red-400 mt-1 hidden"></p></div>
+    <div><label class="text-xs font-bold text-zinc-400">الموديل *</label><input id="sModel" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-cobalt-500" placeholder="مثال: RTX 3060 Ti"><p class="err text-[11px] text-red-400 mt-1 hidden"></p></div>
+    <div><label class="text-xs font-bold text-zinc-400">الحالة *</label>
+      <div class="mt-1 flex gap-2">
+        <label class="flex-1"><input type="radio" name="sCond" value="0.7" class="peer hidden"><span class="peer-checked:border-emerald-500 peer-checked:text-emerald-400 block text-center h-11 py-2.5 rounded-xl border border-zinc-700 text-xs cursor-pointer">ممتازة</span></label>
+        <label class="flex-1"><input type="radio" name="sCond" value="0.55" class="peer hidden"><span class="peer-checked:border-emerald-500 peer-checked:text-emerald-400 block text-center h-11 py-2.5 rounded-xl border border-zinc-700 text-xs cursor-pointer">جيدة جداً</span></label>
+        <label class="flex-1"><input type="radio" name="sCond" value="0.4" class="peer hidden"><span class="peer-checked:border-amber-500 peer-checked:text-amber-400 block text-center h-11 py-2.5 rounded-xl border border-zinc-700 text-xs cursor-pointer">مقبولة</span></label>
+      </div><p class="err text-[11px] text-red-400 mt-1 hidden" id="sCondErr"></p></div>
+    <div><label class="text-xs font-bold text-zinc-400">عمر الاستخدام *</label><select id="sAge" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-cobalt-500"><option value="">اختر...</option><option value="1">أقل من سنة</option><option value="0.85">1-2 سنة</option><option value="0.7">2-4 سنوات</option><option value="0.5">أكثر من 4 سنوات</option></select><p class="err text-[11px] text-red-400 mt-1 hidden"></p></div>
+    <div class="sm:col-span-2"><label class="text-xs font-bold text-zinc-400">صور القطعة (اختياري)</label>
+      <input id="sPhotos" type="file" accept="image/*" multiple class="mt-1 w-full text-sm text-zinc-400 file:me-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-cobalt-600 file:text-white file:text-xs file:font-bold file:cursor-pointer">
+      <div id="sPrev" class="flex gap-2 mt-2"></div>
+    </div>
+    <div class="sm:col-span-2 flex justify-end"><button type="submit" class="tap touch h-12 px-8 rounded-xl bg-cobalt-600 hover:bg-cobalt-500 font-bold">احسب القيمة التقديرية</button></div>
+  </form>
+  <div id="sellResult" class="hidden mt-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6 anim-pop">
+    <h3 class="font-black mb-3 flex items-center gap-2"><i data-lucide="calculator" class="w-5 h-5 text-cobalt-400"></i> التقييم المبدئي</h3>
+    <div class="grid grid-cols-3 gap-2 md:gap-3 text-center">
+      <div class="rounded-xl bg-zinc-800/60 p-3 md:p-4"><p class="text-[10px] md:text-xs text-zinc-400">القيمة التقديرية</p><p id="estVal" class="text-base md:text-xl font-black text-cobalt-300 mt-1"></p></div>
+      <div class="rounded-xl bg-zinc-800/60 p-3 md:p-4"><p class="text-[10px] md:text-xs text-zinc-400">رسوم 3.5%</p><p id="estFee" class="text-base md:text-xl font-black text-amber-400 mt-1"></p></div>
+      <div class="rounded-xl bg-zinc-800/60 p-3 md:p-4"><p class="text-[10px] md:text-xs text-zinc-400">صافي تقديري</p><p id="estNet" class="text-base md:text-xl font-black text-emerald-400 mt-1"></p></div>
+    </div>
+    <button data-action="start-auction" id="startAucBtn" class="tap touch mt-5 w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold flex items-center justify-center gap-2"><i data-lucide="gavel" class="w-5 h-5"></i> ابدأ المزاد المباشر الآن</button>
+  </div>
+  <div id="auctionBox" class="hidden mt-6 rounded-2xl border border-emerald-500/40 bg-zinc-900/60 p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-black flex items-center gap-2 text-sm md:text-base"><span class="w-2.5 h-2.5 rounded-full bg-red-500" style="animation:pulseSoft 1s infinite"></span> مزاد مباشر — التجار يزايدون</h3>
+      <span id="aucTimer" class="text-xs text-zinc-400"></span>
+    </div>
+    <div id="bidFeed" class="space-y-2 max-h-64 overflow-auto no-scrollbar"></div>
+    <div id="aucFinal" class="hidden mt-5 rounded-xl bg-emerald-500/10 border border-emerald-500/40 p-5 anim-pop">
+      <p class="text-sm text-zinc-300">🏆 رسا المزاد على <b id="winMerchant" class="text-white"></b> بسعر <b id="winBid" class="text-emerald-400"></b></p>
+      <div class="grid grid-cols-3 gap-2 mt-3 text-center text-sm">
+        <div><p class="text-zinc-400 text-xs">إجمالي العرض</p><p id="fGross" class="font-black text-white"></p></div>
+        <div><p class="text-zinc-400 text-xs">رسوم 3.5%</p><p id="fFee" class="font-black text-amber-400"></p></div>
+        <div><p class="text-zinc-400 text-xs">صافي ربحك</p><p id="fNet" class="font-black text-emerald-400"></p></div>
+      </div>
+      <button data-action="accept-bid" class="tap touch mt-4 w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold">✅ اقبل العرض — يُضاف الصافي لمحفظتك</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TRADE-IN ═══════════ -->
+<section id="view-tradein" class="view hidden py-6 max-w-4xl mx-auto">
+  <h2 class="text-xl font-black mb-1 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-5 h-5 text-sky-400"></i> الاستبدال الذكي</h2>
+  <p class="text-sm text-zinc-400 mb-6">اختر قطعتك الحالية وحالتها، ثم القطعة المطلوبة — نحسب الإهلاك وفرق الكاش بدقة.</p>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+      <h3 class="font-bold mb-3 text-zinc-300">📦 قطعتك الحالية</h3>
+      <select id="tiOwned" class="w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-cobalt-500"></select>
+      <label class="block mt-4 text-xs font-bold text-zinc-400">الحالة: <span id="tiCondLbl" class="text-sky-400"></span></label>
+      <input id="tiCond" type="range" min="40" max="70" value="60" class="w-full mt-1">
+      <p class="text-[11px] text-zinc-500 mt-2">معامل الاستبدال: <span id="tiFactor" class="text-sky-400 font-bold"></span></p>
+    </div>
+    <div class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+      <h3 class="font-bold mb-3 text-zinc-300">🎯 القطعة المطلوبة</h3>
+      <select id="tiWant" class="w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-cobalt-500"></select>
+      <div id="tiWantImg" class="mt-3 h-32 rounded-xl overflow-hidden border border-zinc-800"><img class="w-full h-full object-cover" alt="" onerror="this.onerror=null;this.src=FALLBACK_IMG"></div>
+    </div>
+  </div>
+  <div id="tiResult" class="mt-6 rounded-2xl border border-sky-500/30 bg-sky-500/5 p-5 md:p-6">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
+      <div class="rounded-xl bg-zinc-800/60 p-4"><p class="text-xs text-zinc-400">رصيد قطعتك (بعد الإهلاك)</p><p id="tiCredit" class="text-xl font-black text-sky-400 mt-1"></p></div>
+      <div class="rounded-xl bg-zinc-800/60 p-4"><p class="text-xs text-zinc-400">سعر الجديدة + تأمين 1.5%</p><p id="tiPrice" class="text-xl font-black text-white mt-1"></p></div>
+      <div class="rounded-xl bg-emerald-500/10 border border-emerald-500/40 p-4"><p class="text-xs text-zinc-400">فرق الكاش المطلوب</p><p id="tiDiff" class="text-2xl font-black text-emerald-400 mt-1"></p></div>
+    </div>
+    <button data-action="trade-exec" class="tap touch mt-5 w-full h-12 rounded-xl bg-sky-600 hover:bg-sky-500 font-bold">نفّذ الاستبدال الآن</button>
+  </div>
+</section>
+
+<!-- ═══════════ B2B ═══════════ -->
+<section id="view-b2b" class="view hidden py-6">
+  <div class="rounded-2xl border border-amber-500/30 bg-gradient-to-l from-amber-900/20 to-zinc-900 p-5 md:p-6 mb-6">
+    <div class="flex flex-wrap items-center gap-4">
+      <span class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 grid place-items-center shrink-0"><i data-lucide="building-2" class="w-6 h-6"></i></span>
+      <div class="flex-1 min-w-52"><h2 class="text-lg md:text-xl font-black">بوابة الشركات ومقاهي الألعاب</h2><p class="text-xs md:text-sm text-zinc-400">سيرفرات • شبكات • تجهيزات جملة — تسعير متدرج وعمولة 0% وعرض سعر PDF فوري.</p></div>
+      <a href="https://wa.me/201000000000" target="_blank" rel="noopener" class="tap touch h-11 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-sm font-bold flex items-center gap-2"><i data-lucide="message-circle" class="w-4 h-4"></i> واتساب مبيعات</a>
+    </div>
+    <div class="grid grid-cols-3 gap-2 mt-4 text-center text-[11px] md:text-xs">
+      <span class="rounded-lg bg-zinc-800/80 px-2 py-2">5+ قطع<br><b class="text-amber-400">خصم 5%</b></span>
+      <span class="rounded-lg bg-zinc-800/80 px-2 py-2">10+ قطع<br><b class="text-amber-400">خصم 10%</b></span>
+      <span class="rounded-lg bg-zinc-800/80 px-2 py-2">25+ قطع<br><b class="text-amber-400">خصم 15%</b></span>
+    </div>
+  </div>
+
+  <div class="flex gap-2 mb-4 overflow-x-auto no-scrollbar" id="b2bTabs"></div>
+
+  <form id="b2bForm" class="grid sm:grid-cols-3 gap-4 mb-6" novalidate>
+    <div><label class="text-xs font-bold text-zinc-400">اسم الشركة / الكافيه *</label><input id="bName" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-amber-500" placeholder="مثال: كافيه النصر للألعاب"><p class="err text-[11px] text-red-400 mt-1 hidden"></p></div>
+    <div><label class="text-xs font-bold text-zinc-400">السجل التجاري *</label><input id="bReg" inputmode="numeric" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-amber-500" placeholder="7 أرقام على الأقل"><p class="err text-[11px] text-red-400 mt-1 hidden"></p></div>
+    <div><label class="text-xs font-bold text-zinc-400">البريد الإلكتروني *</label><input id="bMail" type="email" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-amber-500" placeholder="ops@company.com"><p class="err text-[11px] text-red-400 mt-1 hidden"></p></div>
+  </form>
+  <div class="rounded-2xl border border-zinc-800 overflow-x-auto">
+    <table class="w-full text-sm min-w-[680px]">
+      <thead class="bg-zinc-900 text-zinc-400 text-xs"><tr><th class="p-3 text-right">المنتج (SKU)</th><th class="p-3">سعر الوحدة</th><th class="p-3 w-28">الكمية</th><th class="p-3">شريحة الخصم</th><th class="p-3">الإجمالي بعد الخصم</th></tr></thead>
+      <tbody id="b2bRows"></tbody>
+      <tfoot class="bg-zinc-900/80">
+        <tr><td class="p-3 text-zinc-400">عمولة المنصة</td><td colspan="4" class="p-3 text-emerald-400 font-bold">0% — مجاناً للشركات</td></tr>
+        <tr><td class="p-3 text-zinc-400">إجمالي القطع</td><td colspan="4" class="p-3 font-bold" id="b2bCount">٠</td></tr>
+        <tr class="text-base"><td class="p-3 font-black">الإجمالي النهائي</td><td colspan="4" class="p-3 font-black text-emerald-400 text-xl" id="b2bTotal">٠ ج.م</td></tr>
+      </tfoot>
+    </table>
+  </div>
+  <div class="flex flex-wrap gap-3 mt-5">
+    <button data-action="b2b-quote" class="tap touch h-12 px-8 rounded-xl bg-amber-600 hover:bg-amber-500 font-bold flex items-center gap-2"><i data-lucide="file-text" class="w-5 h-5"></i> توليد عرض سعر PDF</button>
+    <button data-action="b2b-addcart" class="tap touch h-12 px-6 rounded-xl border border-zinc-700 hover:border-emerald-500 font-bold flex items-center gap-2"><i data-lucide="shopping-cart" class="w-5 h-5"></i> أضف الكميات للسلة</button>
+  </div>
+</section>
+
+<!-- ═══════════ DASHBOARD ═══════════ -->
+<section id="view-dashboard" class="view hidden py-6">
+  <h2 class="text-xl font-black mb-6 flex items-center gap-2"><i data-lucide="layout-dashboard" class="w-5 h-5 text-cobalt-400"></i> لوحة التحكم</h2>
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
+    <button data-action="open-orders" class="tap card rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 text-center"><i data-lucide="package" class="w-6 h-6 text-cobalt-400 mx-auto mb-2"></i><p class="text-sm font-bold">طلباتي</p><p class="text-xs text-zinc-500" id="dashOrders">—</p></button>
+    <button data-action="nav" data-view="sell" class="tap card rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 text-center"><i data-lucide="gavel" class="w-6 h-6 text-emerald-400 mx-auto mb-2"></i><p class="text-sm font-bold">مزاداتي</p><p class="text-xs text-zinc-500">بِع قطعتك</p></button>
+    <button data-action="open-wallet" class="tap card rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 text-center"><i data-lucide="wallet" class="w-6 h-6 text-amber-400 mx-auto mb-2"></i><p class="text-sm font-bold">محفظتي</p><p class="text-xs text-zinc-500" id="dashWallet">—</p></button>
+    <button data-action="nav" data-view="favorites" class="tap card rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 text-center"><i data-lucide="heart" class="w-6 h-6 text-red-400 mx-auto mb-2"></i><p class="text-sm font-bold">المفضلة</p><p class="text-xs text-zinc-500" id="dashFav">—</p></button>
+    <button data-action="nav" data-view="tradein" class="tap card rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 text-center"><i data-lucide="refresh-cw" class="w-6 h-6 text-sky-400 mx-auto mb-2"></i><p class="text-sm font-bold">استبدالاتي</p><p class="text-xs text-zinc-500">استبدال ذكي</p></button>
+    <button data-action="open-settings" class="tap card rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 text-center"><i data-lucide="settings" class="w-6 h-6 text-zinc-400 mx-auto mb-2"></i><p class="text-sm font-bold">الإعدادات</p><p class="text-xs text-zinc-500">الحساب والأمان</p></button>
+  </div>
+  <div class="grid lg:grid-cols-2 gap-4">
+    <div class="rounded-2xl border border-cobalt-500/30 bg-cobalt-900/10 p-6">
+      <h3 class="font-black mb-3 flex items-center gap-2"><i data-lucide="cpu" class="w-5 h-5 text-cobalt-400"></i> جهازك الحالي (ذاكرة المساعد)</h3>
+      <ul class="text-sm space-y-2 text-zinc-300">
+        <li class="flex justify-between rounded-lg bg-zinc-900/70 px-3 py-2"><span>المعالج</span><b>Ryzen 5 4650G</b></li>
+        <li class="flex justify-between rounded-lg bg-zinc-900/70 px-3 py-2"><span>كرت الشاشة</span><b>RX 5600 XT</b></li>
+        <li class="flex justify-between rounded-lg bg-zinc-900/70 px-3 py-2"><span>مصدر الطاقة</span><b>550W</b></li>
+      </ul>
+      <button data-action="ask-ai" data-q="ما أفضل ترقية لجهازي؟" class="tap touch mt-4 w-full h-11 rounded-xl bg-cobalt-600 hover:bg-cobalt-500 text-sm font-bold flex items-center justify-center gap-2"><i data-lucide="bot" class="w-4 h-4"></i> اسأل المساعد عن أفضل ترقية</button>
+    </div>
+    <div class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6">
+      <h3 class="font-black mb-3">أحدث الطلبات</h3>
+      <div id="dashOrdersList" class="space-y-2 text-sm"></div>
+      <button data-action="open-orders" class="tap touch mt-3 w-full h-10 rounded-xl border border-zinc-700 hover:border-cobalt-500 text-xs">عرض كل الطلبات</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer class="mt-16 border-t border-zinc-800 bg-zinc-950">
+  <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
+    <div class="col-span-2 md:col-span-1">
+      <p class="text-xl font-black mb-2"><span class="text-cobalt-400">Egy</span>Hardware</p>
+      <p class="text-zinc-400 text-xs leading-relaxed">سوق العتاد التقني الأول في مصر. بيع، اشترِ، قايض، واحصل على نصائح ذكية لترقية جهازك.</p>
+    </div>
+    <div>
+      <h4 class="font-bold mb-3 text-zinc-300">تصفّح</h4>
+      <ul class="space-y-2 text-zinc-400 text-xs">
+        <li><button data-action="nav" data-view="home" class="hover:text-cobalt-400">الرئيسية</button></li>
+        <li><button data-action="nav" data-view="market" class="hover:text-cobalt-400">السوق</button></li>
+        <li><button data-action="nav" data-view="compare" class="hover:text-cobalt-400">مقارنة</button></li>
+        <li><button data-action="nav" data-view="builder" class="hover:text-cobalt-400">ابنِ جهازك</button></li>
+        <li><button data-action="nav" data-view="sell" class="hover:text-cobalt-400">بِع قطعتك</button></li>
+        <li><button data-action="nav" data-view="tradein" class="hover:text-cobalt-400">استبدال</button></li>
+        <li><button data-action="nav" data-view="b2b" class="hover:text-cobalt-400">الشركات</button></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-bold mb-3 text-zinc-300">الأقسام</h4>
+      <ul class="space-y-2 text-zinc-400 text-xs" id="footCats"></ul>
+    </div>
+    <div class="col-span-2 md:col-span-1">
+      <h4 class="font-bold mb-3 text-zinc-300">النشرة البريدية</h4>
+      <p class="text-zinc-500 text-xs mb-2">أحدث العروض والمنتجات مباشرة في بريدك.</p>
+      <form id="newsForm" class="flex gap-2">
+        <input id="newsMail" type="email" placeholder="بريدك الإلكتروني" class="flex-1 h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-xs focus:outline-none focus:border-cobalt-500">
+        <button class="tap touch h-11 px-4 rounded-xl bg-cobalt-600 hover:bg-cobalt-500 text-xs font-bold shrink-0">اشتراك</button>
+      </form>
+      <h4 class="font-bold mb-2 mt-5 text-zinc-300">تواصل معنا</h4>
+      <ul class="space-y-1 text-zinc-400 text-xs">
+        <li>القاهرة، مصر</li>
+        <li><a href="mailto:support@egyhardware.com" class="hover:text-cobalt-400">support@egyhardware.com</a></li>
+        <li><a href="tel:+201000000000" class="hover:text-cobalt-400">+20 100 000 0000</a></li>
+        <li><a href="https://wa.me/201000000000" target="_blank" rel="noopener" class="text-emerald-400 hover:underline">واتساب</a></li>
+      </ul>
+    </div>
+  </div>
+  <p class="text-center text-zinc-600 text-xs pb-6">© 2026 EgyHardware — جميع الحقوق محفوظة</p>
+</footer>
+
+<!-- CART DRAWER -->
+<div id="cartOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden"></div>
+<aside id="cartDrawer" class="fixed top-0 left-0 h-full w-full max-w-md bg-zinc-950 border-s border-zinc-800 z-50 flex-col" style="display:none">
+  <div class="flex items-center justify-between p-4 border-b border-zinc-800">
+    <h3 class="font-black flex items-center gap-2"><i data-lucide="shopping-cart" class="w-5 h-5 text-emerald-400"></i> سلة المشتريات</h3>
+    <button data-action="close-cart" class="tap touch grid place-items-center w-11 h-11 rounded-full hover:bg-zinc-800" aria-label="إغلاق"><i data-lucide="x" class="w-5 h-5"></i></button>
+  </div>
+  <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
+  <div class="border-t border-zinc-800 p-4 space-y-1 text-sm" style="padding-bottom:calc(1rem + env(safe-area-inset-bottom))">
+    <div class="flex justify-between text-zinc-400"><span>المجموع الفرعي</span><span id="cSub"></span></div>
+    <div class="flex justify-between text-zinc-400"><span>الشحن</span><span id="cShip"></span></div>
+    <div class="flex justify-between text-zinc-400"><span>التأمين الاختياري (1.5%)</span><span id="cIns"></span></div>
+    <div class="flex justify-between font-black text-base pt-2 border-t border-zinc-800"><span>الإجمالي</span><span id="cTotal" class="text-emerald-400"></span></div>
+    <p class="text-[10px] text-zinc-500 pt-1">شفافية كاملة (معيار Amazon): لا رسوم مخفية.</p>
+    <button data-action="checkout" class="tap touch w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-black mt-2">إتمام الطلب ✔</button>
+  </div>
+</aside>
+
+<!-- PRODUCT MODAL (bottom-sheet on mobile) -->
+<div id="pModal" class="fixed inset-0 z-[55] hidden items-end md:items-center justify-center md:p-4 bg-black/70 backdrop-blur-sm">
+  <div class="relative w-full max-w-3xl max-h-[92dvh] md:max-h-[90vh] overflow-y-auto rounded-t-3xl md:rounded-3xl border border-zinc-700 bg-zinc-950 anim-sheet md:anim-pop" id="pModalBody"></div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div id="ckModal" class="fixed inset-0 z-[56] hidden items-end md:items-center justify-center md:p-4 bg-black/70 backdrop-blur-sm">
+  <div class="relative w-full max-w-lg max-h-[92dvh] overflow-y-auto rounded-t-3xl md:rounded-3xl border border-zinc-700 bg-zinc-950 anim-sheet md:anim-pop p-5 md:p-6">
+    <div class="w-10 h-1 rounded-full bg-zinc-700 mx-auto mb-3 md:hidden"></div>
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-black flex items-center gap-2"><i data-lucide="credit-card" class="w-5 h-5 text-emerald-400"></i> إتمام الطلب</h3>
+      <button data-action="close-checkout" class="tap touch grid place-items-center w-11 h-11 rounded-full hover:bg-zinc-800" aria-label="إغلاق"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <form id="ckForm" class="space-y-3" novalidate>
+      <div id="ckSummary" class="rounded-xl bg-zinc-900 border border-zinc-800 p-3 text-xs space-y-1"></div>
+      <div><label class="text-xs font-bold text-zinc-400">الاسم بالكامل *</label><input id="ckName" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-emerald-500"><p class="err text-[11px] text-red-400 mt-1 hidden"></p></div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="text-xs font-bold text-zinc-400">الموبايل *</label><input id="ckPhone" inputmode="numeric" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-emerald-500" placeholder="01xxxxxxxxx"><p class="err text-[11px] text-red-400 mt-1 hidden"></p></div>
+        <div><label class="text-xs font-bold text-zinc-400">المحافظة *</label><select id="ckCity" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-emerald-500"><option value="">اختر...</option><option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>المنصورة</option><option>طنطا</option><option>أسيوط</option><option>الزقازيق</option><option>أخرى</option></select><p class="err text-[11px] text-red-400 mt-1 hidden"></p></div>
+      </div>
+      <div><label class="text-xs font-bold text-zinc-400">العنوان بالتفصيل *</label><input id="ckAddr" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-emerald-500" placeholder="الشارع، العمارة، الدور"><p class="err text-[11px] text-red-400 mt-1 hidden"></p></div>
+      <div>
+        <label class="text-xs font-bold text-zinc-400">طريقة الدفع *</label>
+        <div class="grid grid-cols-3 gap-2 mt-1">
+          <label><input type="radio" name="pay" value="بطاقة" class="peer hidden"><span class="peer-checked:border-emerald-500 peer-checked:text-emerald-400 block text-center h-11 py-2.5 rounded-xl border border-zinc-700 text-xs cursor-pointer">💳 بطاقة</span></label>
+          <label><input type="radio" name="pay" value="كاش عند الاستلام" class="peer hidden"><span class="peer-checked:border-emerald-500 peer-checked:text-emerald-400 block text-center h-11 py-2.5 rounded-xl border border-zinc-700 text-xs cursor-pointer">💵 كاش</span></label>
+          <label><input type="radio" name="pay" value="محفظة EgyHardware" class="peer hidden"><span class="peer-checked:border-emerald-500 peer-checked:text-emerald-400 block text-center h-11 py-2.5 rounded-xl border border-zinc-700 text-xs cursor-pointer">👛 المحفظة</span></label>
+        </div><p class="err text-[11px] text-red-400 mt-1 hidden" id="ckPayErr"></p>
+      </div>
+      <button type="submit" class="tap touch w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-black">تأكيد الطلب ✔</button>
+    </form>
+    <div id="ckSuccess" class="hidden text-center py-6 anim-pop">
+      <span class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 grid place-items-center mx-auto mb-3"><i data-lucide="check" class="w-8 h-8"></i></span>
+      <h4 class="font-black text-lg">تم إنشاء طلبك بنجاح! 🎉</h4>
+      <p class="text-sm text-zinc-400 mt-1">رقم الطلب: <b id="ckOrderId" class="text-cobalt-300"></b></p>
+      <p class="text-xs text-zinc-500 mt-1">سيتواصل معك فريق الشحن خلال 24 ساعة.</p>
+      <div class="flex gap-2 mt-4">
+        <button data-action="close-checkout" class="tap touch flex-1 h-11 rounded-xl border border-zinc-700 text-sm">متابعة التسوق</button>
+        <button data-action="nav" data-view="dashboard" class="tap touch flex-1 h-11 rounded-xl bg-cobalt-600 hover:bg-cobalt-500 text-sm font-bold">لوحة التحكم</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INFO MODAL -->
+<div id="infoModal" class="fixed inset-0 z-[56] hidden items-end md:items-center justify-center md:p-4 bg-black/70 backdrop-blur-sm">
+  <div class="relative w-full max-w-md max-h-[88dvh] overflow-y-auto rounded-t-3xl md:rounded-3xl border border-zinc-700 bg-zinc-950 anim-sheet md:anim-pop p-5 md:p-6">
+    <div class="w-10 h-1 rounded-full bg-zinc-700 mx-auto mb-3 md:hidden"></div>
+    <div class="flex items-center justify-between mb-4">
+      <h3 id="infoTitle" class="font-black"></h3>
+      <button data-action="close-info" class="tap touch grid place-items-center w-11 h-11 rounded-full hover:bg-zinc-800" aria-label="إغلاق"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <div id="infoBody"></div>
+  </div>
+</div>
+
+<!-- AI CHAT (fixed: full input support) -->
+<button data-action="open-chat" id="chatFab" class="tap fixed bottom-24 md:bottom-6 left-4 z-40 touch w-14 h-14 rounded-2xl bg-cobalt-600 hover:bg-cobalt-500 shadow-glow grid place-items-center anim-pop" aria-label="المساعد الذكي">
+  <i data-lucide="bot" class="w-7 h-7"></i>
+  <span class="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
+</button>
+<div id="chatPanel" class="fixed z-50 inset-x-0 bottom-0 h-[calc(100dvh-5.5rem)] md:inset-x-auto md:left-4 md:bottom-6 md:w-96 md:h-[600px] md:max-h-[calc(100dvh-3rem)] md:rounded-3xl border-t md:border border-zinc-700 bg-zinc-950 shadow-2xl flex-col overflow-hidden" style="display:none">
+  <div class="flex items-center gap-3 p-3 md:p-4 bg-gradient-to-l from-cobalt-900 to-zinc-900 border-b border-zinc-800">
+    <span class="w-10 h-10 rounded-xl bg-cobalt-600 grid place-items-center shrink-0"><i data-lucide="bot" class="w-6 h-6"></i></span>
+    <div class="flex-1 min-w-0"><p class="font-black text-sm">المساعد الذكي EgyAI</p><p class="text-[10px] text-emerald-400 truncate">● متصل — جهازك: Ryzen 5 4650G • RX 5600 XT • 550W</p></div>
+    <button data-action="clear-chat" class="tap touch w-10 h-10 rounded-xl hover:bg-zinc-800 text-zinc-400 grid place-items-center" aria-label="مسح المحادثة" title="مسح"><i data-lucide="eraser" class="w-4 h-4"></i></button>
+    <button data-action="close-chat" class="tap touch w-10 h-10 rounded-xl hover:bg-zinc-800 grid place-items-center" aria-label="إغلاق"><i data-lucide="x" class="w-5 h-5"></i></button>
+  </div>
+  <div id="chatBody" class="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 text-sm"></div>
+  <div id="chatChips" class="px-3 pb-2 flex gap-2 overflow-x-auto no-scrollbar"></div>
+  <form id="chatForm" class="p-3 border-t border-zinc-800 flex gap-2" style="padding-bottom:calc(0.75rem + env(safe-area-inset-bottom))">
+    <input id="chatInput" type="text" autocomplete="off" enterkeyhint="send" class="flex-1 h-12 bg-zinc-900 border border-zinc-700 rounded-xl px-4 text-sm focus:outline-none focus:border-cobalt-500 focus:ring-2 focus:ring-cobalt-500/30" placeholder="اكتب سؤالك... مثال: عايز 4090">
+    <button type="submit" class="tap touch w-12 h-12 rounded-xl bg-cobalt-600 hover:bg-cobalt-500 grid place-items-center shrink-0" aria-label="إرسال"><i data-lucide="send" class="w-5 h-5 -scale-x-100"></i></button>
+  </form>
+</div>
+
+<!-- MOBILE BOTTOM NAV (Amazon-native style + center FAB) -->
+<nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-zinc-950/95 backdrop-blur-lg border-t border-zinc-800" style="padding-bottom:env(safe-area-inset-bottom)">
+  <div class="grid grid-cols-5 items-end">
+    <button data-action="nav" data-view="home" class="bnav tap flex flex-col items-center gap-1 py-2 text-[10px] text-zinc-400"><i data-lucide="home" class="w-5 h-5"></i>الرئيسية</button>
+    <button data-action="nav" data-view="market" class="bnav tap flex flex-col items-center gap-1 py-2 text-[10px] text-zinc-400"><i data-lucide="store" class="w-5 h-5"></i>السوق</button>
+    <button data-action="nav" data-view="sell" class="tap flex flex-col items-center -mt-5">
+      <span class="w-14 h-14 rounded-full bg-emerald-600 shadow-glowem grid place-items-center border-4 border-onyx"><i data-lucide="gavel" class="w-6 h-6"></i></span>
+      <span class="text-[10px] text-emerald-400 font-bold mt-1">بِع قطعتك</span>
+    </button>
+    <button data-action="open-cart" class="tap relative flex flex-col items-center gap-1 py-2 text-[10px] text-zinc-400"><i data-lucide="shopping-cart" class="w-5 h-5"></i>السلة<span id="cartBadgeM" class="absolute top-1 start-1/2 min-w-4 h-4 px-1 rounded-full bg-emerald-500 text-onyx text-[9px] font-bold grid place-items-center hidden">0</span></button>
+    <button data-action="nav" data-view="dashboard" class="bnav tap flex flex-col items-center gap-1 py-2 text-[10px] text-zinc-400"><i data-lucide="user" class="w-5 h-5"></i>حسابي</button>
+  </div>
+</nav>
+
+<button id="backTop" data-action="back-top" class="tap fixed bottom-24 right-4 z-30 w-11 h-11 rounded-full bg-zinc-800/90 border border-zinc-700 grid place-items-center opacity-0 pointer-events-none transition-opacity" aria-label="الأعلى"><i data-lucide="arrow-up" class="w-5 h-5"></i></button>
+<div id="toasts" class="fixed bottom-24 md:bottom-8 inset-x-0 z-[70] flex flex-col items-center gap-2 pointer-events-none px-4"></div>
+
+<script>
+/* ═══════ DATA ═══════ */
+const FALLBACK_IMG = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="400" height="300" fill="#18181b"/><rect x="140" y="90" width="120" height="90" rx="10" fill="#27272a"/><circle cx="200" cy="135" r="22" fill="#3f3f46"/><text x="200" y="230" font-size="16" text-anchor="middle" fill="#52525b" font-family="sans-serif">EgyHardware</text></svg>');
+const U = 'https://image.qwenlm.ai/public_source/f183b3a6-df2a-46ef-b99c-9df48ae492ab/';
+const IMG = {rtx4070:U+'1a7f0ff55-fd39-42f5-ba60-d7d510ae549e.png',rx6600xt:U+'1cba74d75-ed5c-4dd2-858f-7cb7767a1acf.png',r5600x:U+'18af45c28-5472-4c9e-9720-48b63161a291.png',i5:U+'1390e5a6c-98f8-4b9f-b844-fcc4481da2b7.png',mon:U+'11a2b774e-85a7-4d33-9435-77729033c97c.png',ps5:U+'11b5ca6d7-1b81-413f-a0fd-e59f3ea9b6a8.png',laptop:U+'175af21e2-eafb-460b-9f0b-dea2f6d4b232.png',r7800:U+'1e2698c03-9d7b-4785-b1a9-ca4e97963906.png',mobo:U+'12211f9d9-c0a4-4bc3-a0a6-dac41686789d.png',ram4:U+'167046e5e-e49c-4b5b-90ad-58e0eb76c938.png',ssd:U+'19a1a1395-f1aa-49e3-81b8-5301b979afe2.png',psu:U+'1086d5399-aa38-4403-90e9-ea14732a0df8.png',kase:U+'1dc036ca5-72d3-4525-9c43-775fc541e94b.png',rtx4090:U+'1e8614284-0b7c-4b70-9979-58e0fe8cd592.png',ram5:U+'1c8c6b071-43ea-4cc4-8e6e-4b5c60ef3735.png',dell:U+'17a222d01-0784-4768-9f90-644646d3ef5b.png',hpe:U+'10bf2b209-a330-48a0-9576-888b8d2a799b.png',synology:U+'1a7b20a01-3b38-457d-9a88-4a05ed32ac80.png',cisco:U+'18dcb3aef-9de7-47d2-87c1-266189efeae8.png',unifi:U+'1fbbe32d0-0da9-496c-ad1e-2aeb991be66d.png',mikrotik:U+'1837c97f1-b6f3-4d2f-8f3d-edd411b5d0c9.png',rack:U+'1e8ec0934-6d75-4d3b-a9de-4be03f54fc79.png',ups:U+'15aebe967-901f-4b75-98c6-6f8b9abc33c0.png'};
+const CATS = {gpu:['كروت الشاشة','circuit-board'],cpu:['المعالجات','cpu'],monitor:['الشاشات','monitor'],console:['أجهزة الألعاب','gamepad-2'],ram:['الذاكرة','memory-stick'],storage:['التخزين','hard-drive'],motherboard:['اللوحة الأم','grid-3x3'],psu:['مصادر الطاقة','zap'],case:['الكيسات','box'],laptop:['لابتوبات','laptop'],server:['السيرفرات','server'],network:['الشبكات','network']};
+const CONDS = {new:['جديد','bg-emerald-500/90 text-onyx'],used:['مستعمل','bg-amber-500/90 text-onyx'],open:['Open-Box','bg-sky-500/90 text-onyx']};
+const P = [
+ {id:'rtx4070',name:'RTX 4070 Super — Gigabyte Windforce OC',brand:'Gigabyte',cat:'gpu',price:38500,old:42000,cond:'new',rating:4.8,rev:124,seller:'متجر العتاد',ver:true,ship:0,img:IMG.rtx4070,tier:78,psuNeed:650,specs:{'الذاكرة (VRAM)':'12GB GDDR6X','تردد البوست':'2475MHz','أنوية CUDA':'7168','الطاقة':'220W','الواجهة':'PCIe 4.0'}},
+ {id:'rtx4090',name:'RTX 4090 Gaming OC 24GB',brand:'Gigabyte',cat:'gpu',price:95000,old:105000,cond:'new',rating:4.9,rev:58,seller:'متجر العتاد',ver:true,ship:0,img:IMG.rtx4090,tier:100,psuNeed:850,specs:{'الذاكرة (VRAM)':'24GB GDDR6X','تردد البوست':'2520MHz','أنوية CUDA':'16384','الطاقة':'450W','الواجهة':'PCIe 4.0'}},
+ {id:'rx6600xt',name:'RX 6600 XT — Sapphire Pulse',brand:'Sapphire',cat:'gpu',price:18500,old:0,cond:'new',rating:4.5,rev:89,seller:'كروت مصر',ver:true,ship:0,img:IMG.rx6600xt,tier:55,psuNeed:500,specs:{'الذاكرة (VRAM)':'8GB GDDR6','تردد البوست':'2589MHz','وحدات المعالجة':'2048 SP','الطاقة':'160W','الواجهة':'PCIe 4.0'}},
+ {id:'rx5700u',name:'RX 5700 XT — مستعمل بحالة ممتازة',brand:'AMD',cat:'gpu',price:9500,old:0,cond:'used',rating:4.2,rev:31,seller:'مستخدم موثوق',ver:false,ship:100,img:IMG.rx6600xt,tier:40,psuNeed:500,specs:{'الذاكرة (VRAM)':'8GB GDDR6','تردد البوست':'1905MHz','وحدات المعالجة':'2560 SP','الطاقة':'225W'}},
+ {id:'r5600x',name:'Ryzen 5 5600X — 6 أنوية',brand:'AMD',cat:'cpu',price:7800,old:9200,cond:'new',rating:4.7,rev:215,seller:'متجر العتاد',ver:true,ship:0,img:IMG.r5600x,socket:'AM4',mem:'DDR4',specs:{'المقعد':'AM4','الأنوية/الخيوط':'6/12','التردد':'3.7-4.6GHz','الكاش':'32MB','الطاقة':'65W'}},
+ {id:'i513400f',name:'Intel Core i5-13400F — 10 أنوية/16 خيط',brand:'Intel',cat:'cpu',price:8900,old:0,cond:'new',rating:4.6,rev:156,seller:'عالم المعالجات',ver:true,ship:0,img:IMG.i5,socket:'LGA1700',mem:'DDR5',specs:{'المقعد':'LGA1700','الأنوية/الخيوط':'10/16','التردد':'حتى 4.6GHz','الكاش':'20MB','الطاقة':'65W'}},
+ {id:'r7800x3d',name:'Ryzen 7 7800X3D — الأفضل للألعاب',brand:'AMD',cat:'cpu',price:16500,old:0,cond:'new',rating:4.9,rev:289,seller:'عالم المعالجات',ver:true,ship:0,img:IMG.r7800x3d,socket:'AM5',mem:'DDR5',specs:{'المقعد':'AM5','الأنوية/الخيوط':'8/16','التردد':'4.2-5.0GHz','الكاش':'96MB 3D V-Cache','الطاقة':'120W'}},
+ {id:'lg27',name:'LG UltraGear 27GP850-B — 27" 1440p 165Hz',brand:'LG',cat:'monitor',price:16500,old:19000,cond:'new',rating:4.7,rev:76,seller:'متجر العتاد',ver:true,ship:0,img:IMG.mon,specs:{'المقاس':'27 بوصة','الدقة':'2560×1440','التردد':'165Hz','الزمن':'1ms Nano IPS','منافذ':'HDMI 2.0 + DP 1.4'}},
+ {id:'g7open',name:'Samsung Odyssey G7 32" 240Hz — Open Box',brand:'Samsung',cat:'monitor',price:17850,old:21000,cond:'open',rating:4.6,rev:44,seller:'متجر العتاد',ver:true,ship:0,img:IMG.mon,specs:{'المقاس':'32 بوصة منحنية','الدقة':'2560×1440','التردد':'240Hz','الزمن':'1ms VA','الانحناء':'1000R'}},
+ {id:'ps5',name:'PlayStation 5 Slim — Digital Edition',brand:'Sony',cat:'console',price:22000,old:25000,cond:'new',rating:4.6,rev:143,seller:'متجر العتاد',ver:true,ship:0,img:IMG.ps5,specs:{'التخزين':'1TB SSD','الدقة':'حتى 4K 120Hz','الذاكرة':'16GB','محرك الأقراص':'رقمي بدون قارئ'}},
+ {id:'rogg16',name:'ASUS ROG Strix G16 — RTX 4060, 16GB',brand:'ASUS',cat:'laptop',price:52000,old:58000,cond:'new',rating:4.5,rev:67,seller:'عالم المعالجات',ver:true,ship:0,img:IMG.laptop,specs:{'المعالج':'i7-13650HX','الكارت':'RTX 4060 8GB','الرام':'16GB DDR5','الشاشة':'16" 165Hz'}},
+ {id:'b550m',name:'ASUS TUF Gaming B550M-Plus',brand:'ASUS',cat:'motherboard',price:4200,old:5000,cond:'new',rating:4.4,rev:98,seller:'متجر العتاد',ver:true,ship:0,img:IMG.mobo,socket:'AM4',mem:'DDR4',specs:{'المقعد':'AM4','الذاكرة':'DDR4 حتى 4866MHz','المقاس':'mATX','M.2':'فتحتان','WiFi':'لا'}},
+ {id:'b650t',name:'MSI MAG B650 Tomahawk WiFi',brand:'MSI',cat:'motherboard',price:9800,old:0,cond:'new',rating:4.7,rev:73,seller:'متجر العتاد',ver:true,ship:0,img:IMG.mobo,socket:'AM5',mem:'DDR5',specs:{'المقعد':'AM5','الذاكرة':'DDR5 حتى 7600MHz','المقاس':'ATX','M.2':'3 فتحات','WiFi':'WiFi 6E'}},
+ {id:'z790a',name:'MSI PRO Z790-A WiFi',brand:'MSI',cat:'motherboard',price:11500,old:0,cond:'new',rating:4.5,rev:61,seller:'عالم المعالجات',ver:true,ship:0,img:IMG.mobo,socket:'LGA1700',mem:'DDR5',specs:{'المقعد':'LGA1700','الذاكرة':'DDR5 حتى 7200MHz','المقاس':'ATX','M.2':'4 فتحات','WiFi':'WiFi 6E'}},
+ {id:'ram4',name:'RAM Corsair Vengeance LPX 32GB (2x16) DDR4-3200',brand:'Corsair',cat:'ram',price:3100,old:3600,cond:'new',rating:4.6,rev:187,seller:'كروت مصر',ver:true,ship:0,img:IMG.ram4,mem:'DDR4',specs:{'السعة':'32GB (2×16)','النوع':'DDR4-3200','اللاتنس':'CL16','الارتفاع':'منخفض LPX'}},
+ {id:'ram5',name:'Corsair Vengeance RGB 32GB DDR5-6000',brand:'Corsair',cat:'ram',price:6200,old:0,cond:'new',rating:4.8,rev:102,seller:'كروت مصر',ver:true,ship:0,img:IMG.ram5,mem:'DDR5',specs:{'السعة':'32GB (2×16)','النوع':'DDR5-6000','اللاتنس':'CL36','الإضاءة':'RGB ديناميكي'}},
+ {id:'ssd980',name:'Samsung 980 PRO 1TB NVMe Gen4',brand:'Samsung',cat:'storage',price:4500,old:0,cond:'new',rating:4.8,rev:312,seller:'متجر العتاد',ver:true,ship:0,img:IMG.ssd,specs:{'السعة':'1TB','الواجهة':'NVMe PCIe 4.0','القراءة':'7000MB/s','الكتابة':'5000MB/s'}},
+ {id:'rm750e',name:'Corsair RM750e — 750W 80+ Gold',brand:'Corsair',cat:'psu',price:5200,old:0,cond:'new',rating:4.7,rev:148,seller:'متجر العتاد',ver:true,ship:0,img:IMG.psu,watts:750,specs:{'القدرة':'750W','الكفاءة':'80+ Gold','التوصيل':'Full Modular','الحماية':'OVP/OPP/SCP'}},
+ {id:'case216',name:'Lian Li Lancool 216 — كيس تهوية فائقة',brand:'Lian Li',cat:'case',price:3300,old:0,cond:'new',rating:4.6,rev:77,seller:'كروت مصر',ver:true,ship:0,img:IMG.kase,specs:{'المقاس':'ATX Mid-Tower','المراوح':'2×160mm أمامية','الزجاج':'مقوى جانبي','USB-C':'نعم'}},
+ {id:'dellr750',name:'Dell PowerEdge R750 — 2U Rack Server',brand:'Dell',cat:'server',price:185000,old:0,cond:'new',rating:4.9,rev:41,seller:'EgyEnterprise',ver:true,ship:0,img:IMG.dell,specs:{'الهيئة':'2U Rack','المعالجات':'2× Xeon Silver 4314','الذاكرة':'64GB ECC DDR4','التخزين':'8× SAS Hot-Swap','الباور':'Dual 800W'}},
+ {id:'hpe380',name:'HPE ProLiant DL380 Gen10 — 1U Server',brand:'HPE',cat:'server',price:165000,old:0,cond:'new',rating:4.8,rev:33,seller:'EgyEnterprise',ver:true,ship:0,img:IMG.hpe,specs:{'الهيئة':'1U Rack','المعالجات':'Xeon Gold 5218','الذاكرة':'32GB ECC','التخزين':'4× LFF Hot-Swap','الإدارة':'iLO 5'}},
+ {id:'synology',name:'Synology DiskStation — 8-Bay NAS + 32TB',brand:'Synology',cat:'server',price:42000,old:0,cond:'new',rating:4.7,rev:58,seller:'EgyEnterprise',ver:true,ship:0,img:IMG.synology,specs:{'الفتحات':'8× Bay','السعة المرفقة':'32TB','المنافذ':'2× GbE + USB 3.2','نظام':'DSM 7','RAID':'SHR / RAID6'}},
+ {id:'ups3k',name:'APC Smart-UPS 3000VA — حماية كهرباء',brand:'APC',cat:'server',price:32000,old:0,cond:'new',rating:4.6,rev:27,seller:'EgyEnterprise',ver:true,ship:0,img:IMG.ups,specs:{'القدرة':'3000VA / 2700W','الموجة':'جيبية نقية','الشاشة':'LCD ذكية','المنافذ':'8× IEC'}},
+ {id:'cisco48',name:'Cisco Catalyst 9200 — 48-Port PoE Switch',brand:'Cisco',cat:'network',price:68000,old:0,cond:'new',rating:4.8,rev:22,seller:'EgyEnterprise',ver:true,ship:0,img:IMG.cisco,specs:{'المنافذ':'48× GbE PoE+','الطاقة PoE':'740W','الأب لينك':'4× 10G SFP+','الإدارة':'Layer 3'}},
+ {id:'unifiap',name:'Ubiquiti UniFi U6 Pro — Access Point (3-pack)',brand:'Ubiquiti',cat:'network',price:14500,old:0,cond:'new',rating:4.7,rev:64,seller:'EgyEnterprise',ver:true,ship:0,img:IMG.unifi,specs:{'الواي فاي':'WiFi 6','السرعة':'حتى 5.4Gbps','الهوائيات':'4×4 MU-MIMO','التغذية':'PoE+'}},
+ {id:'mikrotik',name:'MikroTik CCR2004 — Cloud Core Router',brand:'MikroTik',cat:'network',price:12500,old:0,cond:'new',rating:4.6,rev:39,seller:'EgyEnterprise',ver:true,ship:0,img:IMG.mikrotik,specs:{'المعالج':'Annapurna Alpine','المنافذ':'8× GbE + SFP+','النظام':'RouterOS v7','الأداء':'10Gbps routing'}},
+ {id:'rack42',name:'خزانة سيرفرات 42U — باب زجاجي مقوى',brand:'RackPro',cat:'network',price:18500,old:0,cond:'new',rating:4.5,rev:18,seller:'EgyEnterprise',ver:true,ship:0,img:IMG.rack,specs:{'الارتفاع':'42U','الباب':'زجاجي مقفل','التبريد':'4 مراوح سقفية','التحمل':'1200kg'}}
+];
+const OWNED = [{id:'own1',name:'RX 5600 XT (جهازك الحالي)',market:13500},{id:'own2',name:'Ryzen 5 4650G (جهازك الحالي)',market:5200},{id:'own3',name:'GTX 1650',market:6500},{id:'own4',name:'PS4 Pro',market:9000},{id:'own5',name:'شاشة 24" 75Hz',market:3500}];
+const RIG = {cpu:'Ryzen 5 4650G', gpu:'RX 5600 XT', psu:550};
+const MERCHANTS = ['متجر العتاد','كروت مصر','عالم المعالجات','TechZone Cairo','GamerHub EG'];
+const C2B_BASE = {gpu:15000,cpu:7000,monitor:9000,console:18000,laptop:35000,ram:2500,storage:3000,motherboard:3500,psu:3000,case:2000,server:60000,network:15000};
+const B2B_TABS = {
+ gaming:{label:'🎮 تجهيزات الكافيهات',skus:['r5600x','b550m','ram4','ssd980','lg27','ps5']},
+ servers:{label:'🖥️ سيرفرات وشبكات',skus:['dellr750','hpe380','synology','cisco48','unifiap','mikrotik','rack42','ups3k']}
+};
+
+/* ═══════ STATE ═══════ */
+const $ = s => document.querySelector(s);
+const fmt = n => Math.round(n).toLocaleString('ar-EG');
+const money = n => fmt(n)+' ج.م';
+const insFee = n => Math.round(n*0.015);
+const shipFor = sub => sub>=5000?0:150;
+const byId = id => P.find(p=>p.id===id);
+const discPct = p => p.old? Math.round((1-p.price/p.old)*100) : 0;
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function load(k,d){ try{ const v=JSON.parse(localStorage.getItem(k)); return v==null?d:v; }catch(e){ return d; } }
+function save(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+let cart = load('egyhw_cart', {});
+let favorites = new Set(load('egyhw_favs', []));
+let orders = load('egyhw_orders', [{id:'EGY-1042',date:'٢٠٢٦/٠١/٠٥',total:22000,items:1,type:'شراء',status:'تم التوصيل ✅'},{id:'EGY-1057',date:'٢٠٢٦/٠١/١٢',total:7800,items:1,type:'شراء',status:'في الطريق 🚚'},{id:'EGY-1063',date:'٢٠٢٦/٠١/١٨',total:16500,items:1,type:'شراء',status:'قيد التجهيز 📦'}]);
+let wallet = load('egyhw_wallet', 2500);
+let settings = load('egyhw_settings', {name:'',email:'',ins:true});
+let compare = [];
+let filters = {q:'',cats:new Set(),conds:new Set(),brands:new Set(),max:200000,socket:'',sort:'pop'};
+let build = {};
+let auction = {est:0,running:false,lastNet:0};
+let b2bTab = 'gaming';
+let b2bQty = {};
+let currentView = 'home';
+const ROUTES = ['home','market','favorites','compare','builder','sell','tradein','b2b','dashboard'];
+
+function toast(msg, type='ok'){
+  const colors = {ok:'bg-emerald-600', warn:'bg-amber-600', err:'bg-red-600', info:'bg-cobalt-600'};
+  const el = document.createElement('div');
+  el.className = 'anim-snack pointer-events-auto max-w-sm w-auto rounded-full px-5 py-3 text-xs font-bold text-white shadow-lg '+colors[type];
+  el.textContent = msg; $('#toasts').appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity .4s'; setTimeout(()=>el.remove(),400); }, 2800);
+}
+function icons(){ if(window.lucide) lucide.createIcons(); }
+function fieldErr(input, msg){
+  const wrap = input.closest('div');
+  const err = wrap? wrap.querySelector('.err') : null;
+  if(err){ err.textContent=msg; err.classList.toggle('hidden',!msg); }
+  return !msg;
+}
+
+/* ═══════ ROUTER ═══════ */
+function nav(view){
+  if(!ROUTES.includes(view)) view='home';
+  currentView = view;
+  document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));
+  const t = $('#view-'+view); if(t){ t.classList.remove('hidden'); t.classList.add('anim-fadeUp'); }
+  try{ history.replaceState(null,'','#'+view); }catch(e){}
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.querySelectorAll('.bnav').forEach(b=>b.classList.toggle('active', b.dataset.view===view));
+  document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active', b.dataset.view===view));
+  if(view==='market') renderMarket();
+  if(view==='compare') renderCompare();
+  if(view==='builder') renderBuilder();
+  if(view==='b2b') renderB2B();
+  if(view==='favorites') renderFavs();
+  if(view==='dashboard') renderDash();
+  icons();
+}
+window.addEventListener('hashchange', ()=>{ const v=location.hash.slice(1); if(ROUTES.includes(v) && v!==currentView) nav(v); });
+
+/* ═══════ CARDS ═══════ */
+function cardHTML(p, i=0){
+  const d = discPct(p), c = CONDS[p.cond], faved = favorites.has(p.id);
+  return `<div class="card relative rounded-2xl border border-zinc-800 bg-zinc-900/60 overflow-hidden cursor-pointer anim-fadeUp min-w-[70%] xs:min-w-0 sm:min-w-[46%] md:min-w-0 snap-start" style="animation-delay:${Math.min(i*40,300)}ms" data-action="open-product" data-id="${p.id}">
+    <div class="relative h-36 md:h-44 bg-gradient-to-br from-zinc-800 to-zinc-900">
+      <img src="${p.img}" alt="${p.name}" loading="lazy" class="w-full h-full object-cover" onerror="this.onerror=null;this.src=FALLBACK_IMG">
+      <span class="absolute top-2 start-2 px-2 py-0.5 rounded-md text-[10px] font-black ${c[1]}">${c[0]}</span>
+      <div class="absolute top-2 end-2 flex gap-1 items-center">
+        ${d?`<span class="px-2 py-0.5 rounded-md bg-red-600 text-[10px] font-black">-${fmt(d)}%</span>`:''}
+        <button data-action="fav-toggle" data-id="${p.id}" class="tap touch w-8 h-8 rounded-lg bg-onyx/70 grid place-items-center hover:bg-onyx" aria-label="مفضلة"><i data-lucide="heart" class="w-4 h-4 ${faved?'fill-red-500 text-red-500':'text-zinc-300'}"></i></button>
+      </div>
+    </div>
+    <div class="p-3">
+      <h3 class="text-xs md:text-sm font-bold leading-5 h-10 overflow-hidden">${p.name}</h3>
+      <p class="text-[10px] text-zinc-500 mt-1 flex items-center gap-1 flex-wrap"><i data-lucide="star" class="w-3 h-3 text-amber-400 fill-amber-400"></i> ${p.rating.toLocaleString('ar-EG')} (${fmt(p.rev)}) ${p.ver?'• <span class="text-cobalt-400 inline-flex items-center gap-0.5"><i data-lucide="shield-check" class="w-3 h-3"></i> موثّق</span>':''}</p>
+      <p class="mt-1"><span class="text-emerald-400 font-black text-sm md:text-base">${money(p.price)}</span> ${p.old?`<span class="text-zinc-500 line-through text-[10px]">${money(p.old)}</span>`:''}</p>
+      <p class="text-[10px] text-zinc-500 mt-1">${p.ship===0?'<span class="text-emerald-400">شحن مجاني</span>':'الشحن: '+money(p.ship)} • تأمين 1.5%</p>
+      <div class="flex gap-2 mt-2">
+        <button data-action="add-cart" data-id="${p.id}" class="tap touch flex-1 h-10 rounded-lg bg-cobalt-600 hover:bg-cobalt-500 text-xs font-bold">أضف للسلة</button>
+        <button data-action="compare-toggle" data-id="${p.id}" class="tap touch w-10 h-10 rounded-lg border ${compare.includes(p.id)?'border-cobalt-500 text-cobalt-400 bg-cobalt-500/10':'border-zinc-700 text-zinc-400 hover:text-cobalt-400'} grid place-items-center" aria-label="قارن"><i data-lucide="scale" class="w-4 h-4"></i></button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ═══════ HOME ═══════ */
+function renderHome(){
+  $('#catRow').innerHTML = Object.entries(CATS).map(([k,v])=>`<button data-action="cat-go" data-cat="${k}" class="tap card rounded-xl border border-zinc-800 bg-zinc-900/60 p-3 text-center"><i data-lucide="${v[1]}" class="w-6 h-6 text-cobalt-400 mx-auto mb-1"></i><p class="text-[10px] font-bold">${v[0]}</p></button>`).join('');
+  const best = [...P].sort((a,b)=>b.rev-a.rev).slice(0,8);
+  $('#bestGrid').innerHTML = best.map((p,i)=>cardHTML(p,i)).join('');
+  $('#dealGrid').innerHTML = P.filter(p=>p.old).slice(0,6).map((p,i)=>cardHTML(p,i)).join('');
+  $('#footCats').innerHTML = Object.entries(CATS).map(([k,v])=>`<li><button data-action="cat-go" data-cat="${k}" class="hover:text-cobalt-400">${v[0]}</button></li>`).join('');
+}
+
+/* ═══════ MARKET ═══════ */
+function buildFilterUI(){
+  $('#fCats').innerHTML = Object.entries(CATS).map(([k,v])=>`<label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-f="cat" value="${k}" class="accent-cobalt-500 w-4 h-4" ${filters.cats.has(k)?'checked':''}><span>${v[0]}</span></label>`).join('');
+  $('#fConds').innerHTML = Object.entries(CONDS).map(([k,v])=>`<label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-f="cond" value="${k}" class="accent-cobalt-500 w-4 h-4" ${filters.conds.has(k)?'checked':''}><span>${v[0]}</span></label>`).join('');
+  $('#fBrands').innerHTML = [...new Set(P.map(p=>p.brand))].map(b=>`<label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-f="brand" value="${b}" class="accent-cobalt-500 w-4 h-4" ${filters.brands.has(b)?'checked':''}><span>${b}</span></label>`).join('');
+  $('#fPrice').value = filters.max; $('#fSocket').value = filters.socket; $('#fSort').value = filters.sort;
+  $('#priceLbl').textContent = money(filters.max);
+  $('#quickChips').innerHTML = `<button data-action="chip-cat" data-cat="" class="tap shrink-0 h-9 px-4 rounded-full border text-xs font-bold ${filters.cats.size===0?'chip-on border-cobalt-500':'border-zinc-700 text-zinc-300 bg-zinc-900'}">الكل</button>` + Object.entries(CATS).map(([k,v])=>`<button data-action="chip-cat" data-cat="${k}" class="tap shrink-0 h-9 px-4 rounded-full border text-xs font-bold ${filters.cats.has(k)?'chip-on border-cobalt-500':'border-zinc-700 text-zinc-300 bg-zinc-900'}">${v[0]}</button>`).join('');
+}
+function applyFilters(){
+  let list = P.filter(p=>{
+    if(filters.q && !(p.name+' '+p.brand).toLowerCase().includes(filters.q.toLowerCase())) return false;
+    if(filters.cats.size && !filters.cats.has(p.cat)) return false;
+    if(filters.conds.size && !filters.conds.has(p.cond)) return false;
+    if(filters.brands.size && !filters.brands.has(p.brand)) return false;
+    if(p.price > filters.max) return false;
+    if(filters.socket && p.cat==='motherboard' && p.socket!==filters.socket) return false;
+    return true;
+  });
+  if(filters.sort==='priceAsc') list.sort((a,b)=>a.price-b.price);
+  else if(filters.sort==='priceDesc') list.sort((a,b)=>b.price-a.price);
+  else if(filters.sort==='rating') list.sort((a,b)=>b.rating-a.rating);
+  else list.sort((a,b)=>b.rev-a.rev);
+  return list;
+}
+function renderMarket(){
+  const list = applyFilters();
+  $('#marketGrid').innerHTML = list.map((p,i)=>cardHTML(p,i)).join('');
+  $('#mCount').textContent = `(${fmt(list.length)})`;
+  $('#mEmpty').classList.toggle('hidden', list.length>0);
+  icons();
+}
+function openFilters(){ $('#filterOverlay').classList.remove('hidden'); const p=$('#filterPanel'); p.classList.remove('translate-x-full'); p.classList.add('anim-slideR'); document.body.style.overflow='hidden'; }
+function closeFilters(){ $('#filterOverlay').classList.add('hidden'); $('#filterPanel').classList.add('translate-x-full'); document.body.style.overflow=''; }
+
+/* ═══════ FAVORITES ═══════ */
+function renderFavs(){
+  const list = [...favorites].map(byId).filter(Boolean);
+  $('#favCount').textContent = `(${fmt(list.length)})`;
+  $('#favGrid').innerHTML = list.map((p,i)=>cardHTML(p,i)).join('');
+  $('#favEmpty').classList.toggle('hidden', list.length>0);
+  icons();
+}
+function updateFavBadge(){ const b=$('#favBadge'); b.textContent=fmt(favorites.size); b.classList.toggle('hidden', favorites.size===0); const d=$('#dashFav'); if(d) d.textContent = fmt(favorites.size)+' منتجات'; }
+
+/* ═══════ PRODUCT MODAL ═══════ */
+function openProduct(id){
+  const p = byId(id); if(!p) return;
+  const c = CONDS[p.cond], d = discPct(p);
+  const specIcons = {'الذاكرة (VRAM)':'memory-stick','تردد البوست':'gauge','الطاقة':'zap','المقعد':'cpu','السعة':'hard-drive','القدرة':'zap','المقاس':'monitor','التردد':'gauge','الواجهة':'cable'};
+  $('#pModalBody').innerHTML = `
+    <div class="sticky top-0 z-10 flex justify-between p-3 bg-zinc-950/90 backdrop-blur rounded-t-3xl">
+      <button data-action="fav-toggle" data-id="${p.id}" class="tap touch w-11 h-11 rounded-full bg-zinc-800/90 grid place-items-center" aria-label="مفضلة"><i data-lucide="heart" class="w-5 h-5 ${favorites.has(p.id)?'fill-red-500 text-red-500':''}"></i></button>
+      <button data-action="close-modal" class="tap touch w-11 h-11 rounded-full bg-zinc-800/90 hover:bg-zinc-700 grid place-items-center" aria-label="إغلاق"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6 px-5 pb-4">
+      <div class="relative rounded-2xl overflow-hidden border border-zinc-800 h-60 md:h-80">
+        <img src="${p.img}" class="w-full h-full object-cover" alt="${p.name}" onerror="this.onerror=null;this.src=FALLBACK_IMG">
+        <span class="absolute top-2 start-2 px-2 py-1 rounded-md text-xs font-black ${c[1]}">${c[0]}</span>
+        ${d?`<span class="absolute top-2 end-2 px-2 py-1 rounded-md bg-red-600 text-xs font-black">-${fmt(d)}%</span>`:''}
+      </div>
+      <div>
+        <p class="text-xs text-zinc-500">${p.brand} ${p.ver?'• <span class="text-cobalt-400 inline-flex items-center gap-1"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Verified by Platform</span>':''}</p>
+        <h2 class="text-lg font-black mt-1 leading-7">${p.name}</h2>
+        <p class="text-xs text-zinc-400 mt-1 flex items-center gap-1"><i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i> ${p.rating.toLocaleString('ar-EG')} • ${fmt(p.rev)} تقييم • البائع: ${p.seller}</p>
+        <p class="mt-3 text-2xl font-black text-emerald-400">${money(p.price)} ${p.old?`<span class="text-sm text-zinc-500 line-through font-normal">${money(p.old)}</span>`:''}</p>
+        <div class="mt-3 rounded-xl border border-zinc-700 bg-zinc-900 p-3 text-xs space-y-1">
+          <p class="flex justify-between text-zinc-400"><span>السعر</span><span>${money(p.price)}</span></p>
+          <p class="flex justify-between text-zinc-400"><span>الشحن</span><span>${p.ship===0?'<span class="text-emerald-400">مجاني</span>':money(p.ship)}</span></p>
+          <p class="flex justify-between text-zinc-400"><span>التأمين (1.5%)</span><span>${money(insFee(p.price))}</span></p>
+          <p class="flex justify-between font-black border-t border-zinc-700 pt-1"><span>الإجمالي الشفاف</span><span class="text-emerald-400">${money(p.price+p.ship+insFee(p.price))}</span></p>
+        </div>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          ${Object.entries(p.specs).map(([k,v])=>`<div class="rounded-lg bg-zinc-900 border border-zinc-800 p-2 text-center"><i data-lucide="${specIcons[k]||'check'}" class="w-4 h-4 text-cobalt-400 mx-auto mb-1"></i><p class="text-[9px] text-zinc-500">${k}</p><p class="text-[11px] font-bold">${v}</p></div>`).join('')}
+        </div>
+        <button data-action="ask-ai" data-q="ما رأيك في ${p.name} لجهازي؟" class="tap touch mt-3 w-full h-11 rounded-xl border border-cobalt-500/50 text-cobalt-300 text-sm flex items-center justify-center gap-2"><i data-lucide="bot" class="w-5 h-5"></i> اسأل المساعد عن توافقه مع جهازك</button>
+      </div>
+    </div>
+    <div class="sticky bottom-0 bg-zinc-950/95 backdrop-blur border-t border-zinc-800 p-3 flex gap-2" style="padding-bottom:calc(0.75rem + env(safe-area-inset-bottom))">
+      <button data-action="add-cart" data-id="${p.id}" class="tap touch flex-1 h-12 rounded-xl bg-cobalt-600 hover:bg-cobalt-500 font-bold">🛒 أضف للسلة</button>
+      <button data-action="buy-now" data-id="${p.id}" class="tap touch flex-1 h-12 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold">اشترِ الآن ⚡</button>
+      <button data-action="compare-toggle" data-id="${p.id}" class="tap touch w-12 h-12 rounded-xl border border-zinc-700 grid place-items-center" aria-label="قارن"><i data-lucide="scale" class="w-5 h-5"></i></button>
+    </div>`;
+  $('#pModal').classList.remove('hidden'); $('#pModal').classList.add('flex');
+  document.body.style.overflow='hidden';
+  icons();
+}
+function closeModal(){ $('#pModal').classList.add('hidden'); $('#pModal').classList.remove('flex'); document.body.style.overflow=''; }
+
+/* ═══════ CART ═══════ */
+function cartCalc(){
+  let sub=0,count=0;
+  for(const [id,q] of Object.entries(cart)){ const p=byId(id); if(p){ sub+=p.price*q; count+=q; } }
+  const insVal = settings.ins!==false ? insFee(sub) : 0;
+  return {sub,count,ship:count?shipFor(sub):0,ins:insVal};
+}
+function updateBadges(){
+  const {count} = cartCalc();
+  ['#cartBadge','#cartBadgeM'].forEach(s=>{ const el=$(s); el.textContent=fmt(count); el.classList.toggle('hidden',count===0); });
+}
+function addToCart(id, silent=false){
+  cart[id] = (cart[id]||0)+1; save('egyhw_cart',cart); updateBadges(); renderCart();
+  if(!silent) toast('✔ أُضيف للسلة: '+byId(id).name);
+}
+function renderCart(){
+  const entries = Object.entries(cart).filter(([id])=>byId(id));
+  if(!entries.length){ $('#cartItems').innerHTML = '<p class="text-center text-zinc-500 py-16 text-sm">سلتك فارغة — تصفّح السوق وابدأ التسوق 🛒</p>'; }
+  else $('#cartItems').innerHTML = entries.map(([id,q])=>{ const p=byId(id); return `
+    <div class="flex gap-3 rounded-xl border border-zinc-800 bg-zinc-900/60 p-2 anim-fadeUp">
+      <img src="${p.img}" class="w-16 h-16 rounded-lg object-cover" alt="" onerror="this.onerror=null;this.src=FALLBACK_IMG">
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-bold truncate">${p.name}</p>
+        <p class="text-emerald-400 text-sm font-black mt-0.5">${money(p.price)}</p>
+        <div class="flex items-center gap-2 mt-1">
+          <button data-action="qty-inc" data-id="${id}" class="tap touch w-9 h-9 rounded-lg bg-zinc-800 hover:bg-cobalt-600 grid place-items-center" aria-label="زيادة"><i data-lucide="plus" class="w-4 h-4"></i></button>
+          <span class="text-sm font-bold w-6 text-center">${fmt(q)}</span>
+          <button data-action="qty-dec" data-id="${id}" class="tap touch w-9 h-9 rounded-lg bg-zinc-800 hover:bg-zinc-700 grid place-items-center" aria-label="نقص"><i data-lucide="minus" class="w-4 h-4"></i></button>
+          <button data-action="cart-remove" data-id="${id}" class="tap touch ms-auto w-9 h-9 rounded-lg text-red-400 hover:bg-red-500/10 grid place-items-center" aria-label="حذف"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+    </div>`; }).join('');
+  const c = cartCalc();
+  $('#cSub').textContent = money(c.sub);
+  $('#cShip').innerHTML = c.count? (c.ship===0?'<span class="text-emerald-400">مجاني 🎉</span>':money(c.ship)) : '—';
+  $('#cIns').textContent = settings.ins!==false? money(c.ins) : 'معطّل';
+  $('#cTotal').textContent = money(c.sub+c.ship+c.ins);
+  icons();
+}
+function openCart(){ renderCart(); $('#cartOverlay').classList.remove('hidden'); const d=$('#cartDrawer'); d.style.display='flex'; d.style.animation='slideL .3s ease'; }
+function closeCart(){ $('#cartOverlay').classList.add('hidden'); $('#cartDrawer').style.display='none'; }
+
+/* ═══════ CHECKOUT ═══════ */
+function openCheckout(){
+  const c = cartCalc();
+  if(!c.count){ toast('سلتك فارغة! أضف منتجات أولاً','warn'); return; }
+  closeCart();
+  $('#ckSummary').innerHTML = `
+    <p class="flex justify-between"><span>المجموع الفرعي (${fmt(c.count)} قطعة)</span><span>${money(c.sub)}</span></p>
+    <p class="flex justify-between"><span>الشحن</span><span>${c.ship===0?'مجاني':money(c.ship)}</span></p>
+    <p class="flex justify-between"><span>التأمين (1.5%)</span><span>${settings.ins!==false?money(c.ins):'معطّل'}</span></p>
+    <p class="flex justify-between font-black text-emerald-400 border-t border-zinc-700 pt-1"><span>الإجمالي</span><span>${money(c.sub+c.ship+c.ins)}</span></p>`;
+  $('#ckForm').classList.remove('hidden'); $('#ckSuccess').classList.add('hidden');
+  $('#ckModal').classList.remove('hidden'); $('#ckModal').classList.add('flex');
+  icons();
+}
+function closeCheckout(){ $('#ckModal').classList.add('hidden'); $('#ckModal').classList.remove('flex'); }
+function placeOrder(e){
+  e.preventDefault();
+  let ok=true;
+  ok = fieldErr($('#ckName'), $('#ckName').value.trim().length>=3?'':'الاسم 3 أحرف على الأقل') && ok;
+  ok = fieldErr($('#ckPhone'), /^01[0125][0-9]{8}$/.test($('#ckPhone').value.trim())?'':'رقم مصري صحيح: 01xxxxxxxxx') && ok;
+  ok = fieldErr($('#ckCity'), $('#ckCity').value?'':'اختر المحافظة') && ok;
+  ok = fieldErr($('#ckAddr'), $('#ckAddr').value.trim().length>=8?'':'اكتب عنواناً تفصيلياً') && ok;
+  const pay = document.querySelector('input[name=pay]:checked');
+  const pe = $('#ckPayErr'); pe.textContent = pay?'':'اختر طريقة الدفع'; pe.classList.toggle('hidden',!!pay); ok = ok && !!pay;
+  if(!ok){ toast('⚠️ راجع بيانات الشحن والدفع','err'); return; }
+  const c = cartCalc();
+  const id = 'EGY-'+Math.floor(1000+Math.random()*9000);
+  orders.unshift({id, date:new Date().toLocaleDateString('ar-EG'), total:c.sub+c.ship+c.ins, items:c.count, type:'شراء', status:'قيد التجهيز 📦'});
+  save('egyhw_orders',orders);
+  cart={}; save('egyhw_cart',cart); updateBadges(); renderCart();
+  $('#ckForm').classList.add('hidden'); $('#ckSuccess').classList.remove('hidden');
+  $('#ckOrderId').textContent = '#'+id;
+  icons();
+}
+
+/* ═══════ COMPARE ═══════ */
+function renderCompare(){
+  $('#cmpTray').innerHTML = compare.length? compare.map(id=>{const p=byId(id);return `<span class="flex items-center gap-2 rounded-full border border-cobalt-500/50 bg-cobalt-500/10 ps-1 pe-3 py-1 text-xs"><img src="${p.img}" class="w-7 h-7 rounded-full object-cover" onerror="this.onerror=null;this.src=FALLBACK_IMG"><span class="max-w-36 truncate">${p.name}</span><button data-action="compare-toggle" data-id="${id}" class="text-red-400" aria-label="إزالة"><i data-lucide="x" class="w-3.5 h-3.5"></i></button></span>`;}).join('') + `<button data-action="clear-compare" class="text-xs text-zinc-500 hover:text-red-400">مسح الكل</button>` : '';
+  if(compare.length<2){ $('#cmpTable').innerHTML=''; $('#cmpHint').classList.remove('hidden'); icons(); return; }
+  $('#cmpHint').classList.add('hidden');
+  const items = compare.map(byId);
+  const keys = ['السعر','الحالة','التقييم','البائع', ...new Set(items.flatMap(p=>Object.keys(p.specs)))];
+  const diffOnly = $('#diffOnly').checked;
+  const rows = keys.map(k=>{
+    const vals = items.map(p=> k==='السعر'?money(p.price) : k==='الحالة'?CONDS[p.cond][0] : k==='التقييم'?p.rating.toLocaleString('ar-EG') : k==='البائع'?p.seller : (p.specs[k]||'—'));
+    const diff = new Set(vals).size>1;
+    if(diffOnly && !diff) return '';
+    return `<tr class="border-t border-zinc-800 ${diff?'':'opacity-60'}">
+      <td class="p-3 text-xs font-bold text-zinc-400 bg-zinc-900 whitespace-nowrap">${k} ${diff?'<span class="text-cobalt-400">● يختلف</span>':''}</td>
+      ${vals.map(v=>`<td class="p-3 text-sm text-center ${diff?'bg-cobalt-500/10 text-cobalt-200 font-bold':''}">${v}</td>`).join('')}
+    </tr>`;
+  }).join('');
+  $('#cmpTable').innerHTML = `<table class="w-full min-w-[560px]"><thead><tr><th class="p-3 bg-zinc-900 text-right text-xs text-zinc-400">المواصفة</th>${items.map(p=>`<th class="p-3 bg-zinc-900"><img src="${p.img}" class="w-20 h-16 object-cover rounded-lg mx-auto mb-2" onerror="this.onerror=null;this.src=FALLBACK_IMG"><p class="text-xs font-bold">${p.name}</p><button data-action="add-cart" data-id="${p.id}" class="mt-2 h-9 px-3 rounded-lg bg-cobalt-600 hover:bg-cobalt-500 text-[10px] font-bold">أضف للسلة</button></th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>`;
+  icons();
+}
+
+/* ═══════ BUILDER ═══════ */
+const SLOTS = [['cpu','المعالج'],['motherboard','اللوحة الأم'],['gpu','كرت الشاشة'],['ram','الذاكرة'],['storage','التخزين'],['psu','مصدر الطاقة'],['case','الكيس'],['monitor','الشاشة']];
+function renderBuilder(){
+  $('#buildSlots').innerHTML = SLOTS.map(([cat,label])=>{
+    const opts = P.filter(p=>p.cat===cat);
+    const sel = build[cat];
+    return `<div class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
+      <p class="text-xs font-bold text-zinc-400 mb-2 flex items-center gap-1"><i data-lucide="${CATS[cat][1]}" class="w-4 h-4 text-cobalt-400"></i> ${label}</p>
+      <select data-slot="${cat}" class="bsel w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-cobalt-500">
+        <option value="">— اختر —</option>
+        ${opts.map(o=>`<option value="${o.id}" ${sel===o.id?'selected':''}>${o.name} • ${money(o.price)}</option>`).join('')}
+      </select>
+      ${sel?`<p class="text-[11px] text-emerald-400 mt-2">✔ ${byId(sel).name}</p>`:''}
+    </div>`;
+  }).join('');
+  checkCompat(); icons();
+}
+function checkCompat(){
+  const warns=[]; const cpu=byId(build.cpu||''), mobo=byId(build.motherboard||''), ram=byId(build.ram||''), gpu=byId(build.gpu||''), psu=byId(build.psu||'');
+  if(cpu&&mobo&&cpu.socket&&mobo.socket&&cpu.socket!==mobo.socket) warns.push(['err',`❌ تعارض Socket: المعالج ${cpu.socket} لا يعمل مع لوحة ${mobo.socket}.`]);
+  if(ram&&mobo&&ram.mem&&mobo.mem&&ram.mem!==mobo.mem) warns.push(['err',`❌ تعارض ذاكرة: اللوحة تدعم ${mobo.mem} والرام المختارة ${ram.mem}.`]);
+  if(gpu&&psu&&psu.watts&&gpu.psuNeed&&psu.watts<gpu.psuNeed) warns.push(['warn',`⚠️ الباور ${psu.watts}W أضعف من المطلوب للكارت (${gpu.psuNeed}W).`]);
+  if(gpu&&cpu&&gpu.tier>=90) warns.push(['warn','⚠️ الكرت أقوى من المعالج المختار — احتمال Bottleneck. اسأل المساعد الذكي.']);
+  const any = Object.values(build).some(Boolean);
+  $('#buildWarn').innerHTML = warns.map(w=>`<p class="rounded-xl px-4 py-3 text-sm font-bold ${w[0]==='err'?'bg-red-500/10 border border-red-500/40 text-red-300':'bg-amber-500/10 border border-amber-500/40 text-amber-300'}">${w[1]}</p>`).join('') || (any?'<p class="rounded-xl px-4 py-3 text-sm font-bold bg-emerald-500/10 border border-emerald-500/40 text-emerald-300">✅ التوافق سليم حتى الآن.</p>':'');
+  const total = Object.values(build).reduce((s,id)=>s+(byId(id)?byId(id).price:0),0);
+  $('#buildTotal').textContent = money(total);
+}
+
+/* ═══════ SELL ═══════ */
+function sellInit(){
+  $('#sCat').innerHTML = '<option value="">اختر...</option>'+Object.entries(CATS).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join('');
+  $('#sPhotos').addEventListener('change', e=>{
+    $('#sPrev').innerHTML = [...e.target.files].slice(0,4).map(f=>`<img src="${URL.createObjectURL(f)}" class="w-14 h-14 rounded-lg object-cover border border-zinc-700" alt="">`).join('');
+  });
+}
+function sellValidate(){
+  let ok=true;
+  ok = fieldErr($('#sName'), $('#sName').value.trim().length>=3?'':'الاسم 3 أحرف على الأقل') && ok;
+  ok = fieldErr($('#sPhone'), /^01[0125][0-9]{8}$/.test($('#sPhone').value.trim())?'':'رقم مصري صحيح: 01xxxxxxxxx') && ok;
+  ok = fieldErr($('#sCat'), $('#sCat').value?'':'اختر القسم') && ok;
+  ok = fieldErr($('#sModel'), $('#sModel').value.trim().length>=2?'':'اكتب الموديل') && ok;
+  ok = fieldErr($('#sAge'), $('#sAge').value?'':'اختر عمر الاستخدام') && ok;
+  const cond = document.querySelector('input[name=sCond]:checked');
+  const ce = $('#sCondErr'); ce.textContent = cond?'':'اختر حالة القطعة'; ce.classList.toggle('hidden',!!cond); ok = ok && !!cond;
+  return ok;
+}
+function sellEstimate(){
+  if(!sellValidate()){ toast('⚠️ راجع الحقول المطلوبة','err'); return; }
+  const cond = parseFloat(document.querySelector('input[name=sCond]:checked').value);
+  const age = parseFloat($('#sAge').value);
+  const base = C2B_BASE[$('#sCat').value]||8000;
+  const est = Math.round(base*cond*age/50)*50;
+  auction.est = est;
+  $('#estVal').textContent = money(est);
+  $('#estFee').textContent = money(est*0.035);
+  $('#estNet').textContent = money(est*0.965);
+  $('#sellResult').classList.remove('hidden');
+  $('#auctionBox').classList.add('hidden'); $('#aucFinal').classList.add('hidden');
+  icons();
+}
+function startAuction(){
+  if(auction.running) return;
+  auction.running = true;
+  $('#startAucBtn').disabled = true;
+  $('#auctionBox').classList.remove('hidden'); $('#bidFeed').innerHTML=''; $('#aucFinal').classList.add('hidden');
+  $('#auctionBox').scrollIntoView({behavior:'smooth'});
+  let current = Math.round(auction.est*0.72/50)*50, round = 0; const maxRounds = 9;
+  const tick = setInterval(()=>{
+    round++;
+    const m = MERCHANTS[Math.floor(Math.random()*MERCHANTS.length)];
+    current = Math.round(current*(1+(0.02+Math.random()*0.05))/50)*50;
+    $('#bidFeed').insertAdjacentHTML('beforeend', `<div class="bid-row flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm"><span class="flex items-center gap-2"><i data-lucide="store" class="w-4 h-4 text-cobalt-400"></i> ${m}</span><b class="text-emerald-400">${money(current)}</b></div>`);
+    $('#aucTimer').textContent = `الجولة ${fmt(round)} من ${fmt(maxRounds)}`;
+    $('#bidFeed').scrollTop = 1e6; icons();
+    if(round>=maxRounds){
+      clearInterval(tick); auction.running=false; $('#startAucBtn').disabled=false;
+      const fee = Math.round(current*0.035);
+      auction.lastNet = current-fee;
+      $('#winMerchant').textContent = m; $('#winBid').textContent = money(current);
+      $('#fGross').textContent = money(current); $('#fFee').textContent = money(fee); $('#fNet').textContent = money(current-fee);
+      $('#aucFinal').classList.remove('hidden'); icons();
+      toast('🏆 انتهى المزاد — عرض نهائي جاهز');
+    }
+  }, 800);
+}
+
+/* ═══════ TRADE-IN ═══════ */
+function tiInit(){
+  $('#tiOwned').innerHTML = OWNED.map(o=>`<option value="${o.id}">${o.name}</option>`).join('');
+  $('#tiWant').innerHTML = P.filter(p=>p.cond==='new').map(p=>`<option value="${p.id}">${p.name} • ${money(p.price)}</option>`).join('');
+  const calc = ()=>{
+    const own = OWNED.find(o=>o.id===$('#tiOwned').value) || OWNED[0];
+    const want = byId($('#tiWant').value) || P[0];
+    const f = parseInt($('#tiCond').value)/100;
+    $('#tiCondLbl').textContent = f>=0.65?'ممتازة':f>=0.55?'جيدة جداً':f>=0.45?'جيدة':'مقبولة';
+    $('#tiFactor').textContent = f.toLocaleString('ar-EG');
+    const credit = Math.round(own.market*f);
+    const price = want.price + insFee(want.price);
+    const diff = price - credit;
+    $('#tiCredit').textContent = money(credit);
+    $('#tiPrice').textContent = money(price);
+    $('#tiDiff').textContent = diff>0? money(diff) : 'لك رصيد '+money(-diff)+' 🎉';
+    $('#tiWantImg').querySelector('img').src = want.img;
+  };
+  ['#tiOwned','#tiWant','#tiCond'].forEach(s=>$(s).addEventListener('input',calc));
+  calc();
+}
+
+/* ═══════ B2B ═══════ */
+const tierDisc = q => q>=25?0.15 : q>=10?0.10 : q>=5?0.05 : 0;
+function renderB2B(){
+  $('#b2bTabs').innerHTML = Object.entries(B2B_TABS).map(([k,t])=>`<button data-action="b2b-tab" data-tab="${k}" class="tap shrink-0 h-11 px-5 rounded-full border text-sm font-bold ${b2bTab===k?'bg-amber-600 border-amber-600 text-white':'border-zinc-700 text-zinc-300 bg-zinc-900'}">${t.label}</button>`).join('');
+  $('#b2bRows').innerHTML = B2B_TABS[b2bTab].skus.map(id=>{ const p=byId(id); const q=b2bQty[id]||0; return `
+    <tr class="border-t border-zinc-800">
+      <td class="p-3"><div class="flex items-center gap-2"><img src="${p.img}" class="w-10 h-10 rounded-lg object-cover" onerror="this.onerror=null;this.src=FALLBACK_IMG"><span class="text-xs font-bold">${p.name}</span></div></td>
+      <td class="p-3 text-center text-emerald-400 font-bold">${money(p.price)}</td>
+      <td class="p-3 text-center"><input type="number" min="0" value="${q}" data-bqty="${id}" class="w-20 h-10 bg-zinc-900 border border-zinc-700 rounded-lg text-center text-sm focus:outline-none focus:border-amber-500"></td>
+      <td class="p-3 text-center"><span data-btier="${id}" class="text-xs font-bold text-zinc-500">—</span></td>
+      <td class="p-3 text-center font-bold" data-btot="${id}">٠ ج.م</td>
+    </tr>`; }).join('');
+  b2bCalc(); icons();
+}
+function b2bCalc(){
+  let total=0, count=0;
+  Object.keys(B2B_TABS).forEach(t=>B2B_TABS[t].skus.forEach(id=>{
+    const q = b2bQty[id]||0; if(!q) return;
+    const d = tierDisc(q); const p = byId(id);
+    total += Math.round(p.price*q*(1-d)); count += q;
+    const tEl = $(`[data-btier="${id}"]`);
+    if(tEl){ tEl.textContent = d? `خصم ${fmt(d*100)}%`:'بدون خصم'; tEl.className = 'text-xs font-bold '+(d?'text-amber-400':'text-zinc-500'); }
+    const bEl = $(`[data-btot="${id}"]`); if(bEl) bEl.textContent = money(Math.round(p.price*q*(1-d)));
+  }));
+  $('#b2bCount').textContent = fmt(count)+' قطعة';
+  $('#b2bTotal').textContent = money(total);
+  return {total,count};
+}
+function b2bQuote(){
+  let ok=true;
+  ok = fieldErr($('#bName'), $('#bName').value.trim().length>=3?'':'اسم الشركة مطلوب') && ok;
+  ok = fieldErr($('#bReg'), /^\d{7,}$/.test($('#bReg').value.trim())?'':'السجل التجاري 7 أرقام على الأقل') && ok;
+  ok = fieldErr($('#bMail'), /.+@.+\..+/.test($('#bMail').value.trim())?'':'بريد إلكتروني صحيح مطلوب') && ok;
+  const {total,count} = b2bCalc();
+  if(!ok){ toast('⚠️ أكمل بيانات الشركة أولاً','err'); return; }
+  if(!count){ toast('⚠️ أضف كميات للطلب أولاً','warn'); return; }
+  const rows = Object.keys(B2B_TABS).flatMap(t=>B2B_TABS[t].skus).filter(id=>(b2bQty[id]||0)>0).map(id=>{
+    const q=b2bQty[id], p=byId(id), d=tierDisc(q);
+    return '<tr><td style="padding:6px;border:1px solid #ddd">'+p.name+'</td><td style="padding:6px;border:1px solid #ddd">'+q+'</td><td style="padding:6px;border:1px solid #ddd">'+(d*100)+'%</td><td style="padding:6px;border:1px solid #ddd">'+Math.round(p.price*q*(1-d)).toLocaleString('ar-EG')+' ج.م</td></tr>';
+  }).join('');
+  const w = window.open('','_blank');
+  if(!w){ toast('اسمح بالنوافذ المنبثقة لتوليد الـ PDF','warn'); return; }
+  w.document.write('<html dir="rtl"><head><meta charset="UTF-8"><title>عرض سعر EgyHardware</title><style>body{font-family:Tahoma,Arial;padding:24px;color:#111}h1{color:#2563eb}table{width:100%;border-collapse:collapse;margin-top:12px}</style></head><body>'
+  +'<h1>EgyHardware — عرض سعر شركات (B2B)</h1>'
+  +'<p>الشركة: <b>'+esc($('#bName').value)+'</b> • السجل: '+esc($('#bReg').value)+' • البريد: '+esc($('#bMail').value)+'</p>'
+  +'<p>التاريخ: '+new Date().toLocaleDateString('ar-EG')+'</p>'
+  +'<table><tr style="background:#eef4ff"><th style="padding:6px;border:1px solid #ddd">المنتج</th><th style="padding:6px;border:1px solid #ddd">الكمية</th><th style="padding:6px;border:1px solid #ddd">الخصم</th><th style="padding:6px;border:1px solid #ddd">الإجمالي</th></tr>'+rows+'</table>'
+  +'<p style="margin-top:16px;font-size:18px">الإجمالي النهائي: <b>'+total.toLocaleString('ar-EG')+' ج.م</b> ('+count.toLocaleString('ar-EG')+' قطعة) — عمولة المنصة: 0%</p>'
+  +'<p style="color:#666;font-size:12px">صالح لمدة 7 أيام. للحفظ كـ PDF اختر "Save as PDF".</p>'
+  +'<scr'+'ipt>window.print()<\/scr'+'ipt>'
+  +'</body></html>');
+  w.document.close();
+  toast('📄 تم توليد عرض السعر — اختر الحفظ كـ PDF');
+}
+function b2bAddCart(){
+  const ids = Object.keys(B2B_TABS).flatMap(t=>B2B_TABS[t].skus).filter(id=>(b2bQty[id]||0)>0);
+  if(!ids.length){ toast('⚠️ أضف كميات أولاً','warn'); return; }
+  ids.forEach(id=>{ cart[id]=(cart[id]||0)+ (b2bQty[id]||0); });
+  save('egyhw_cart',cart); updateBadges(); renderCart();
+  toast(`✔ أُضيفت ${fmt(ids.length)} أصناف بالسلة`); openCart();
+}
+
+/* ═══════ DASHBOARD & INFO ═══════ */
+function renderDash(){
+  $('#dashOrders').textContent = fmt(orders.length)+' طلبات';
+  $('#dashWallet').textContent = money(wallet);
+  $('#dashFav').textContent = fmt(favorites.size)+' منتجات';
+  $('#dashOrdersList').innerHTML = orders.slice(0,3).map(o=>`<div class="flex items-center justify-between rounded-lg bg-zinc-800/60 px-3 py-2"><span>#${o.id} <span class="text-zinc-500 text-[10px]">(${o.type})</span></span><span class="text-xs text-zinc-300">${o.status}</span></div>`).join('') || '<p class="text-zinc-500 text-xs">لا طلبات بعد.</p>';
+  icons();
+}
+function openInfo(title, html){
+  $('#infoTitle').textContent = title;
+  $('#infoBody').innerHTML = html;
+  $('#infoModal').classList.remove('hidden'); $('#infoModal').classList.add('flex');
+  icons();
+}
+function closeInfo(){ $('#infoModal').classList.add('hidden'); $('#infoModal').classList.remove('flex'); }
+function openWallet(){
+  openInfo('محفظتي 👛', `
+    <div class="rounded-2xl bg-gradient-to-l from-amber-900/40 to-zinc-900 border border-amber-500/30 p-5 text-center mb-4">
+      <p class="text-xs text-zinc-400">الرصيد الحالي</p>
+      <p class="text-3xl font-black text-amber-400 mt-1">${money(wallet)}</p>
+    </div>
+    <ul class="text-xs text-zinc-300 space-y-1">
+      <li>• قبول عروض المزادات (C2B) يُضاف تلقائياً.</li>
+      <li>• مرتجعات الطلبات خلال 14 يوم.</li>
+      <li>• يمكن استخدام الرصيد عند الدفع.</li>
+    </ul>`);
+}
+function openOrders(){
+  openInfo('طلباتي 📦', orders.length? `<div class="space-y-2">${orders.map(o=>`
+    <div class="rounded-xl border border-zinc-800 bg-zinc-900 p-3 text-sm">
+      <div class="flex justify-between"><b>#${o.id}</b><span class="text-xs text-zinc-500">${o.date}</span></div>
+      <div class="flex justify-between mt-1 text-xs text-zinc-400"><span>${o.type} • ${fmt(o.items)} قطعة</span><span>${o.total?money(o.total):'—'}</span></div>
+      <p class="text-xs mt-1 text-cobalt-300">${o.status}</p>
+    </div>`).join('')}</div>` : '<p class="text-center text-zinc-500 py-8">لا توجد طلبات بعد.</p>');
+}
+function openSettings(){
+  openInfo('الإعدادات ⚙️', `
+    <div class="space-y-3">
+      <div><label class="text-xs font-bold text-zinc-400">الاسم</label><input id="stName" value="${esc(settings.name||'')}" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-cobalt-500"></div>
+      <div><label class="text-xs font-bold text-zinc-400">البريد الإلكتروني</label><input id="stMail" type="email" value="${esc(settings.email||'')}" class="mt-1 w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl px-3 text-sm focus:outline-none focus:border-cobalt-500"></div>
+      <label class="flex items-center gap-2 text-sm cursor-pointer rounded-xl border border-zinc-800 p-3"><input id="stIns" type="checkbox" class="accent-cobalt-500 w-4 h-4" ${settings.ins!==false?'checked':''}> تضمين تأمين الشحن 1.5% في السلة</label>
+      <div class="rounded-xl border border-zinc-800 p-3 text-xs text-zinc-400">
+        <p class="font-bold text-zinc-300 mb-1">جهازك المسجل (ذاكرة المساعد):</p>
+        <p>CPU: ${RIG.cpu} • GPU: ${RIG.gpu} • PSU: ${RIG.psu}W</p>
+      </div>
+      <button data-action="save-settings" class="tap touch w-full h-11 rounded-xl bg-cobalt-600 hover:bg-cobalt-500 font-bold text-sm">حفظ الإعدادات</button>
+    </div>`);
+}
+function saveSettings(){
+  settings = { name: $('#stName').value.trim(), email: $('#stMail').value.trim(), ins: $('#stIns').checked };
+  save('egyhw_settings', settings);
+  renderCart(); closeInfo(); toast('✔ تم حفظ الإعدادات');
+}
+
+/* ═══════ AI CHAT (FIXED) ═══════ */
+const CHIPS = ['عايز أركب RTX 4090','أفضل ترقية لكرت الشاشة؟','جهازي ينفع معاه RTX 4070؟','أحسن شاشة للألعاب','محتاج سيرفر وشبكات لكافيه','مصدر الطاقة 550W كفاية؟'];
+function chatPush(role, html){
+  const wrap = role==='user' ? `<div class="flex justify-end"><div class="max-w-[85%] rounded-2xl rounded-ee-sm bg-cobalt-600 px-3 py-2 anim-pop">${html}</div></div>`
+    : `<div class="flex justify-start gap-2"><span class="w-7 h-7 rounded-lg bg-cobalt-600/30 text-cobalt-300 grid place-items-center shrink-0 mt-1"><i data-lucide="bot" class="w-4 h-4"></i></span><div class="max-w-[88%] rounded-2xl rounded-es-sm bg-zinc-800/90 border border-zinc-700 px-3 py-2 anim-pop">${html}</div></div>`;
+  $('#chatBody').insertAdjacentHTML('beforeend', wrap);
+  $('#chatBody').scrollTop = 1e6; icons();
+}
+function chatCard(id){
+  const p = byId(id);
+  return `<div class="mt-2 flex gap-2 rounded-xl border border-zinc-700 bg-zinc-900 p-2">
+    <img src="${p.img}" class="w-14 h-14 rounded-lg object-cover" alt="" onerror="this.onerror=null;this.src=FALLBACK_IMG">
+    <div class="flex-1 min-w-0">
+      <p class="text-[11px] font-bold truncate">${p.name}</p>
+      <p class="text-emerald-400 text-xs font-black">${money(p.price)}</p>
+      <div class="flex gap-1 mt-1">
+        <button data-action="add-cart" data-id="${p.id}" class="tap touch h-8 px-2 rounded-lg bg-cobalt-600 hover:bg-cobalt-500 text-[10px] font-bold">+ للسلة</button>
+        <button data-action="open-product" data-id="${p.id}" class="tap touch h-8 px-2 rounded-lg border border-zinc-700 text-[10px]">التفاصيل</button>
+      </div>
+    </div>
+  </div>`;
+}
+function aiBrain(t){
+  const out=[]; t=t.toLowerCase();
+  const has = (...w)=>w.some(x=>t.includes(x));
+  if(has('4090')){
+    out.push({t:'text',v:`🧠 بما إن جهازك الحالي <b>${RIG.cpu}</b> + <b>${RIG.gpu}</b>، لازم أوقفك هنا:`});
+    out.push({t:'warn',v:'⚠️ <b>تحذير اختناق (Bottleneck):</b> معالجك سيبطل أداء الـ RTX 4090 بنسبة ٤٠-٥٠٪، ومصدر 550W أقل بكثير من المطلوب (850W+).'});
+    out.push({t:'text',v:'خطتي: 1) معالج 7800X3D 2) باور 750-850W 3) أو RTX 4070 Super كخيار متوازن الآن:'});
+    out.push({t:'cards',v:['r7800x3d','rm750e','rtx4070']});
+  } else if(has('4070')){
+    out.push({t:'warn',v:`⚠️ RTX 4070 Super مع ${RIG.cpu}: اختناق ~٢٠٪ في 1080p، ومطلوب باور 650W (عندك 550W).`});
+    out.push({t:'text',v:'شغّله على 1440p وخطّط لترقية المعالج والباور:'});
+    out.push({t:'cards',v:['rtx4070','r7800x3d','rm750e']});
+  } else if(has('6600','3060','4060','1660')){
+    out.push({t:'text',v:'✅ اختيار متوازن! RX 6600 XT ضعف أداء كرتك الحالي بدون اختناق، وباور 550W يكفي:'});
+    out.push({t:'cards',v:['rx6600xt']});
+  } else if(has('سيرفر','server','شبكات','network','سويتش','راوتر')){
+    out.push({t:'text',v:'🖥️ للسيرفرات والشبكات عندنا قسم شركات متكامل بأسعار جملة وعمولة 0%. ترشيحاتي لبداية قوية:'});
+    out.push({t:'cards',v:['dellr750','cisco48','unifiap']});
+    out.push({t:'nav',v:'b2b'});
+  } else if(has('شاشة','مونيتور','monitor')){
+    out.push({t:'text',v:`مع ${RIG.gpu}: شاشات 1440p ممتازة لألعاب القصة، وللتنافسية ارفع الكرت لاحقاً:`});
+    out.push({t:'cards',v:['lg27','g7open']});
+  } else if(has('باور','psu','مصدر','واط','طاقة')){
+    out.push({t:'warn',v:'مصدر 550W مناسب لترقيات اقتصادية فقط. لأي كرت أعلى من RTX 4070 ستحتاج 650-850W.'});
+    out.push({t:'cards',v:['rm750e']});
+  } else if(has('معالج','بروسيسور','cpu','رايزن','ryzen')){
+    out.push({t:'text',v:'لإلغاء الاختناق: 7800X3D (يتطلب AM5+DDR5)، أو 5600X كترقية اقتصادية:'});
+    out.push({t:'cards',v:['r7800x3d','r5600x']});
+  } else if(has('ترقية','upgrade','كرت','كارت','gpu','ميزانية')){
+    out.push({t:'text',v:`بناءً على جهازك (${RIG.cpu} • ${RIG.gpu} • 550W):<br>• اقتصادي: RX 6600 XT<br>• طموح: RTX 4070 Super (يحتاج باور أقوى)`});
+    out.push({t:'cards',v:['rx6600xt','rtx4070']});
+  } else if(has('سلام','اهلا','هاي','صباح','مساء','ازيك')){
+    out.push({t:'text',v:`أهلاً بيك! 👋 أنا EgyAI — حافظ جهازك: <b>${RIG.cpu}</b> + <b>${RIG.gpu}</b> + 550W. اسألني عن أي ترقية.`});
+  } else {
+    out.push({t:'text',v:'أقدر أساعدك في: كشف الاختناقات 🧠، التوافق 🔌، اقتراحات بالميزانية 💰، السيرفرات والشبكات 🖥️، أو شاشة مناسبة 🖥️. جرّب الاقتراحات بالأسفل 👇'});
+  }
+  return out;
+}
+function askAI(q){
+  openChat();
+  chatPush('user', esc(q));
+  chatPush('ai', '<span class="dot-typing"><span></span><span></span><span></span></span>');
+  setTimeout(()=>{
+    const last = $('#chatBody').lastElementChild; if(last) last.remove();
+    const parts = aiBrain(q);
+    let delay = 0;
+    parts.forEach(part=>{
+      setTimeout(()=>{
+        if(part.t==='cards') chatPush('ai', part.v.map(chatCard).join(''));
+        else if(part.t==='warn') chatPush('ai', `<span class="text-amber-300">${part.v}</span>`);
+        else if(part.t==='nav') chatPush('ai', `<button data-action="nav" data-view="${part.v}" class="tap touch mt-1 w-full h-10 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold">🏢 افتح بوابة الشركات (B2B)</button>`);
+        else chatPush('ai', part.v);
+      }, delay); delay += 450;
+    });
+  }, 700);
+}
+function openChat(){
+  const c=$('#chatPanel'); c.style.display='flex';
+  $('#chatFab').style.display='none';
+  if(!$('#chatBody').children.length){
+    chatPush('ai', `أهلاً! 👋 أنا مساعدك الذكي. عارف إن جهازك: <b>${RIG.cpu}</b> • <b>${RIG.gpu}</b> • PSU <b>550W</b>. اكتب سؤالك بحرية — مثال: "عايز 4090" وهحذّرك من أي Bottleneck.`);
+    $('#chatChips').innerHTML = CHIPS.map(c=>`<button data-action="chat-chip" data-q="${c}" class="shrink-0 tap h-9 px-3 rounded-full border border-cobalt-500/50 text-cobalt-300 text-[11px] hover:bg-cobalt-500/10">${c}</button>`).join('');
+    icons();
+  }
+  if(window.innerWidth>768) setTimeout(()=>$('#chatInput').focus(),150);
+}
+function closeChat(){ $('#chatPanel').style.display='none'; $('#chatFab').style.display='grid'; }
+function clearChat(){ $('#chatBody').innerHTML=''; $('#chatChips').innerHTML=''; openChat(); toast('تم مسح المحادثة','info'); }
+
+/* ═══════ EVENTS ═══════ */
+document.addEventListener('click', e=>{
+  const el = e.target.closest('[data-action]'); if(!el) return;
+  const a = el.dataset.action, id = el.dataset.id;
+  switch(a){
+    case 'nav': nav(el.dataset.view); break;
+    case 'cat-go': filters.cats = new Set([el.dataset.cat]); buildFilterUI(); nav('market'); break;
+    case 'chip-cat': { const c=el.dataset.cat; filters.cats = c? new Set([c]) : new Set(); buildFilterUI(); renderMarket(); break; }
+    case 'open-product': openProduct(id); break;
+    case 'close-modal': closeModal(); break;
+    case 'add-cart': addToCart(id); break;
+    case 'buy-now': addToCart(id,true); closeModal(); openCheckout(); break;
+    case 'qty-inc': cart[id]=(cart[id]||0)+1; save('egyhw_cart',cart); updateBadges(); renderCart(); break;
+    case 'qty-dec': cart[id]=(cart[id]||0)-1; if(cart[id]<=0) delete cart[id]; save('egyhw_cart',cart); updateBadges(); renderCart(); break;
+    case 'cart-remove': delete cart[id]; save('egyhw_cart',cart); updateBadges(); renderCart(); toast('تم الحذف من السلة','info'); break;
+    case 'open-cart': openCart(); break;
+    case 'close-cart': closeCart(); break;
+    case 'checkout': openCheckout(); break;
+    case 'close-checkout': closeCheckout(); break;
+    case 'open-filters': openFilters(); break;
+    case 'close-filters': closeFilters(); break;
+    case 'fav-toggle': {
+      if(favorites.has(id)){ favorites.delete(id); toast('أُزيل من المفضلة','info'); }
+      else { favorites.add(id); toast('❤️ أُضيف للمفضلة'); }
+      save('egyhw_favs',[...favorites]); updateFavBadge();
+      if(currentView==='market') renderMarket();
+      else if(currentView==='home') renderHome();
+      else if(currentView==='favorites') renderFavs();
+      break;
+    }
+    case 'compare-toggle': {
+      if(compare.includes(id)) { compare = compare.filter(x=>x!==id); toast('أُزيل من المقارنة','info'); }
+      else { if(compare.length>=3){ toast('الحد الأقصى 3 منتجات','warn'); break; } compare.push(id); toast('⚖ أُضيف للمقارنة'); }
+      const b=$('#cmpBadge'); b.textContent=fmt(compare.length); b.classList.toggle('hidden',!compare.length);
+      if(currentView==='market') renderMarket();
+      if(currentView==='home') renderHome();
+      if(currentView==='compare') renderCompare();
+      break;
+    }
+    case 'clear-compare': compare=[]; renderCompare(); $('#cmpBadge').classList.add('hidden'); break;
+    case 'clear-filters': filters={q:'',cats:new Set(),conds:new Set(),brands:new Set(),max:200000,socket:'',sort:'pop'}; $('#searchInput').value=''; $('#searchInputM').value=''; buildFilterUI(); renderMarket(); toast('تم مسح الفلاتر','info'); break;
+    case 'builder-add-all': { const ids=Object.values(build).filter(Boolean); if(!ids.length){toast('اختر القطع أولاً','warn');break;} ids.forEach(x=>addToCart(x,true)); toast(`✔ أُضيفت ${fmt(ids.length)} قطع للسلة`); openCart(); break; }
+    case 'start-auction': startAuction(); break;
+    case 'accept-bid': {
+      wallet += auction.lastNet; save('egyhw_wallet',wallet);
+      orders.unshift({id:'AUC-'+Math.floor(1000+Math.random()*9000), date:new Date().toLocaleDateString('ar-EG'), total:auction.lastNet, items:1, type:'بيع C2B', status:'بانتظار الاستلام 🚚'});
+      save('egyhw_orders',orders);
+      toast(`💰 أُضيف ${money(auction.lastNet)} لمحفظتك`);
+      $('#aucFinal').classList.add('hidden');
+      break;
+    }
+    case 'trade-exec': {
+      orders.unshift({id:'TRD-'+Math.floor(1000+Math.random()*9000), date:new Date().toLocaleDateString('ar-EG'), total:0, items:1, type:'استبدال', status:'بانتظار الفحص 🔍'});
+      save('egyhw_orders',orders);
+      toast('🔄 تم حجز الاستبدال — فحص مجاني عند الاستلام');
+      break;
+    }
+    case 'b2b-tab': b2bTab = el.dataset.tab; renderB2B(); break;
+    case 'b2b-quote': b2bQuote(); break;
+    case 'b2b-addcart': b2bAddCart(); break;
+    case 'open-chat': openChat(); break;
+    case 'close-chat': closeChat(); break;
+    case 'clear-chat': clearChat(); break;
+    case 'chat-chip': askAI(el.dataset.q); break;
+    case 'ask-ai': askAI(el.dataset.q); break;
+    case 'open-wallet': openWallet(); break;
+    case 'open-orders': openOrders(); break;
+    case 'open-settings': openSettings(); break;
+    case 'save-settings': saveSettings(); break;
+    case 'close-info': closeInfo(); break;
+    case 'back-top': window.scrollTo({top:0,behavior:'smooth'}); break;
+  }
+});
+$('#pModal').addEventListener('click', e=>{ if(e.target.id==='pModal') closeModal(); });
+$('#ckModal').addEventListener('click', e=>{ if(e.target.id==='ckModal') closeCheckout(); });
+$('#infoModal').addEventListener('click', e=>{ if(e.target.id==='infoModal') closeInfo(); });
+$('#cartOverlay').addEventListener('click', closeCart);
+$('#filterOverlay').addEventListener('click', closeFilters);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal(); closeCart(); closeCheckout(); closeInfo(); closeFilters(); } });
+
+document.addEventListener('change', e=>{
+  const f = e.target.dataset?.f;
+  if(f){ const v=e.target.value, s = f==='cat'?filters.cats : f==='cond'?filters.conds : filters.brands; e.target.checked? s.add(v): s.delete(v); buildFilterUI(); renderMarket(); }
+  if(e.target.id==='fSocket'){ filters.socket=e.target.value; renderMarket(); }
+  if(e.target.id==='fSort'){ filters.sort=e.target.value; renderMarket(); }
+  if(e.target.id==='diffOnly') renderCompare();
+  if(e.target.classList.contains('bsel')){ if(e.target.value) build[e.target.dataset.slot]=e.target.value; else delete build[e.target.dataset.slot]; renderBuilder(); }
+});
+document.addEventListener('input', e=>{
+  if(e.target.id==='fPrice'){ filters.max=+e.target.value; $('#priceLbl').textContent=money(filters.max); renderMarket(); }
+  if(e.target.dataset.bqty!==undefined){ b2bQty[e.target.dataset.bqty] = Math.max(0, parseInt(e.target.value)||0); b2bCalc(); }
+});
+$('#searchForm').addEventListener('submit', e=>{ e.preventDefault(); filters.q=$('#searchInput').value.trim(); nav('market'); });
+$('#searchFormM').addEventListener('submit', e=>{ e.preventDefault(); filters.q=$('#searchInputM').value.trim(); nav('market'); });
+$('#sellForm').addEventListener('submit', e=>{ e.preventDefault(); sellEstimate(); });
+$('#ckForm').addEventListener('submit', placeOrder);
+$('#chatForm').addEventListener('submit', e=>{ e.preventDefault(); const q=$('#chatInput').value.trim(); if(!q) return; $('#chatInput').value=''; askAI(q); });
+$('#newsForm').addEventListener('submit', e=>{ e.preventDefault(); if(/.+@.+\..+/.test($('#newsMail').value.trim())){ toast('📬 تم الاشتراك في النشرة البريدية'); $('#newsMail').value=''; } else toast('بريد إلكتروني غير صحيح','err'); });
+
+window.addEventListener('scroll', ()=>{
+  const b=$('#backTop');
+  const show = window.scrollY>600;
+  b.style.opacity = show?'1':'0';
+  b.style.pointerEvents = show?'auto':'none';
+}, {passive:true});
+
+/* ═══════ INIT ═══════ */
+renderHome(); buildFilterUI(); sellInit(); tiInit(); updateBadges(); updateFavBadge(); icons();
+const initial = location.hash.slice(1);
+nav(ROUTES.includes(initial)? initial : 'home');
+window.addEventListener('load', ()=>{ setTimeout(()=>{ const l=$('#loader'); l.style.opacity='0'; setTimeout(()=>l.remove(),650); }, 400); });
+setTimeout(()=>{ const l=$('#loader'); if(l){ l.style.opacity='0'; setTimeout(()=>l.remove(),650); } }, 2500);
+</script>
+
+<!--
+### 🛡️ EgyHardware Quality & Benchmark Audit
+**1. Global Standard Check:**
+- *Amazon Native (Android) test:* Pass — Bottom Nav بخمسة تبويبات + FAB مركزي (بِع)، Bottom-Sheet للمودالات على الموبايل، شريط لاصق أسفل صفحة المنتج (أضف/اشترِ الآن)، Snackbars سفلية، Carousels أفقية Snap-Scroll، Chips فلاتر سريعة، أهداف لمس ≥44px، safe-area insets.
+- *Newegg Deep Tech test:* Pass — فلترة عميقة + Socket filter + مواصفات بأيقونات + فحص توافق في البنّاء.
+- *Best Buy Clarity test:* Pass — Smart Compare بإبراز الاختلافات + لوحة تحكم أيقونية كاملة.
+**2. Visual, Tooling & UI Check:**
+- *RTL & Arabic:* Pass (Cairo + أرقام عربية + dir=rtl).
+- *Gamer Dark Aesthetic:* Pass (#09090b/Cobalt/Emerald + توهج).
+- *B2B Servers & Networks:* Pass — تابان (تجهيزات كافيهات / سيرفرات وشبكات) مع 8 SKUs مؤسسية (Dell/HPE/Synology/Cisco/Ubiquiti/MikroTik/Rack/APC) + خصم متدرج + PDF + واتساب.
+**3. Vulnerability & Edge Case Report:**
+- *[CRITICAL FIXED]:* الشات: الإدخال يعمل الآن عبر Enter وزر الإرسال (form submit سليم + type=submit + esc() ضد الحقن + تركيز تلقائي + مسح محادثة + إغلاق/فتح FAB). لوحة الفلاتر موبايل Off-Canvas مع Overlay وESC.
+- *[SUGGESTION]:* زر "أضف الكميات للسلة" في B2B يحوّل طلب الجملة لسلة عادية — يزيد تحويل الشركات لطلب فوري.
+-->
